@@ -72,7 +72,11 @@ some factor depending on eps.&quot;
         <span class="name">CountMinSketchMonoid</span><span class="params">(<span name="eps">eps: <span name="scala.Double" class="extype">Double</span></span>, <span name="delta">delta: <span name="scala.Double" class="extype">Double</span></span>, <span name="seed">seed: <span name="scala.Int" class="extype">Int</span></span>, <span name="heavyHittersPct">heavyHittersPct: <span name="scala.Double" class="extype">Double</span> = <span class="symbol">0.01</span></span>)</span>
       </span>
       </h4>
-      
+      <p class="shortcomment cmt">Create a CountMinSketchMonoid</p><div class="fullcomment"><div class="comment cmt"><p>Create a CountMinSketchMonoid</p></div><dl class="paramcmts block"><dt class="param">eps</dt><dd class="cmt"><p>A parameter that bounds the error of each query estimate.</p></dd><dt class="param">delta</dt><dd class="cmt"><p>A bound on the probability that a query estimate does not lie within some small interval
+       (an interval that depends on eps) around the truth.</p></dd><dt class="param">seed</dt><dd class="cmt"><p>A seed to initialize the random number generator used to create the pairwise independent
+       hash functions.</p></dd><dt class="param">heavyHittersPct</dt><dd class="cmt"><p>A threshold for finding heavy hitters, i.e., elements that appear at least
+                 (heavyHittersPct * totalCount) times in the stream.
+</p></dd></dl></div>
     </li></ol>
             </div>
 
