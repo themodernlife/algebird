@@ -31,11 +31,11 @@ object DocGen {
     site.includeScaladoc(docDirectory) ++ Seq(
       scalacOptions in doc <++= (version, baseDirectory in LocalProject("algebird")).map { (v, rootBase) =>
         val tagOrBranch = if (v.endsWith("-SNAPSHOT")) "develop" else v
-        val docSourceUrl = "https://github.com/twitter/algebird/tree/" + tagOrBranch + "€{FILE_PATH}.scala"
+        val docSourceUrl = "https://github.io/themodernlife/algebird/tree/" + tagOrBranch + "€{FILE_PATH}.scala"
         Seq("-sourcepath", rootBase.getAbsolutePath, "-doc-source-url", docSourceUrl)
       },
       Unidoc.unidocDirectory := file(docDirectory),
-      gitRemoteRepo := "git@github.com:twitter/algebird.git",
+      gitRemoteRepo := "git@github.com:themodernlife/algebird.git",
       ghkeys.synchLocal <<= syncLocal
     )
 
