@@ -61,12 +61,13 @@ import scala.collection.immutable.SortedSet
  * are often of the form: "with probability p >= 1 - delta, the estimate is close to the truth by
  * some factor depending on eps."
  *
- * @eps A parameter that bounds the error of each query estimate.
- * @delta A bound on the probability that a query estimate does not lie within some small interval
+ * @constructor Create a CountMinSketchMonoid
+ * @param eps A parameter that bounds the error of each query estimate.
+ * @param delta A bound on the probability that a query estimate does not lie within some small interval
  *        (an interval that depends on eps) around the truth.
- * @seed  A seed to initialize the random number generator used to create the pairwise independent
+ * @param seed  A seed to initialize the random number generator used to create the pairwise independent
  *        hash functions.
- * @heavyHittersPct A threshold for finding heavy hitters, i.e., elements that appear at least
+ * @param heavyHittersPct A threshold for finding heavy hitters, i.e., elements that appear at least
  *                  (heavyHittersPct * totalCount) times in the stream.
  */
 class CountMinSketchMonoid(eps : Double, delta : Double, seed : Int,

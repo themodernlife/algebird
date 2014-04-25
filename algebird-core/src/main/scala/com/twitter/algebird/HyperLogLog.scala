@@ -32,7 +32,7 @@ case class BitSetLite(in: Array[Byte]) {
 }
 
 /** Implementation of the HyperLogLog approximate counting as a Monoid
- * @link http://algo.inria.fr/flajolet/Publications/FlFuGaMe07.pdf
+ * [http://algo.inria.fr/flajolet/Publications/FlFuGaMe07.pdf]
  *
  * HyperLogLog: the analysis of a near-optimal cardinality estimation algorithm
  * Philippe Flajolet and Éric Fusy and Olivier Gandouet and Frédéric Meunier
