@@ -53,7 +53,7 @@ object AlgebirdBuild extends Build {
     },
 
     pomExtra := (
-      <url>https://github.com/themodernlife/algebird</url>
+      <url>https://github.com/twitter/algebird</url>
       <licenses>
         <license>
           <name>Apache 2</name>
@@ -63,8 +63,8 @@ object AlgebirdBuild extends Build {
         </license>
       </licenses>
       <scm>
-        <url>git@github.com:themodernlife/algebird.git</url>
-        <connection>scm:git:git@github.com:themodernlife/algebird.git</connection>
+        <url>git@github.com:twitter/algebird.git</url>
+        <connection>scm:git:git@github.com:twitter/algebird.git</connection>
       </scm>
       <developers>
         <developer>
@@ -151,4 +151,6 @@ object AlgebirdBuild extends Build {
   lazy val algebirdBijection = module("bijection").settings(
     libraryDependencies += "com.twitter" %% "bijection-core" % "0.6.2"
   ).dependsOn(algebirdCore, algebirdTest % "test->compile")
+
+  lazy val algebirdDocs = module("docs").settings(Guide.settings:_*).dependsOn(algebirdCore, algebirdTest % "test->compile")
 }
