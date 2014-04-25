@@ -36,17 +36,8 @@ object Guide {
         "crossString" -> (s match {
             case BinVer(_) => ""
             case _         => "cross CrossVersion.full"
-          }),
-        "jarName" -> (s match {
-            case BinVer(bv) => "akka-actor_" + bv + "-" + v + ".jar"
-            case _          => "akka-actor_" + s + "-" + v + ".jar"
-          }),
-        "binVersion" -> (s match {
-            case BinVer(bv) => bv
-            case _          => s
-          }),
-        "sigarVersion" -> Dependencies.Compile.sigar.revision,
-        "github" -> githubUrl(v)
+        }),
+        "github" -> DocGen.githubBase(v)
       )
     },
     preprocess <<= (sourceDirectory, target in preprocess, cacheDirectory, preprocessExts, preprocessVars, streams) map {
@@ -56,16 +47,4 @@ object Guide {
   )) ++ Seq(
     cleanFiles <+= target in preprocess in Sphinx
   )
-
-  object Dependencies {
-
-    object Compile {
-      val sigar       = "org.fusesource"                   % "sigar"                        % "1.6.4"            // ApacheV2
-    }
-  }
-
-  def githubUrl(v: String): String = {
-    val branch = if (v.endsWith("SNAPSHOT")) "master" else "v" + v
-    "http://github.com/akka/akka/tree/" + branch
-  }
 }

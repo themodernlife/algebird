@@ -27,17 +27,24 @@ object DocGen {
     ()
   }
 
-  lazy val unidocSettings: Seq[sbt.Setting[_]] =
-    site.includeScaladoc(docDirectory) ++ Seq(
+  // Allow forked repos to hack on docs by pushing to their own GitHub pages
+  def docGenRemoteRepo: String = System.getProperty("git.remote.repo", "git@github.com:twitter/algebird.git")
+
+  def githubBase(v: String): String = {
+    val tagOrBranch = if (v.endsWith("-SNAPSHOT")) "develop" else v
+    "https://github.com/twitter/algebird/tree/" + tagOrBranch
+  }
+
+  lazy val docGenSettings: Seq[sbt.Setting[_]] =
+    Seq(
       scalacOptions in doc <++= (version, baseDirectory in LocalProject("algebird")).map { (v, rootBase) =>
-        val tagOrBranch = if (v.endsWith("-SNAPSHOT")) "develop" else v
-        val docSourceUrl = "https://github.io/themodernlife/algebird/tree/" + tagOrBranch + "€{FILE_PATH}.scala"
+        val docSourceUrl = githubBase(v) + "€{FILE_PATH}.scala"
         Seq("-sourcepath", rootBase.getAbsolutePath, "-doc-source-url", docSourceUrl)
       },
       Unidoc.unidocDirectory := file(docDirectory),
-      gitRemoteRepo := "git@github.com:themodernlife/algebird.git",
+      gitRemoteRepo := docGenRemoteRepo,
       ghkeys.synchLocal <<= syncLocal
     )
 
-  lazy val publishSettings = site.settings ++ Unidoc.settings ++ ghpages.settings ++ unidocSettings
+  lazy val publishSettings = site.settings ++ Unidoc.settings ++ ghpages.settings ++ docGenSettings
 }

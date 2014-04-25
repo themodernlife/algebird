@@ -8,7 +8,7 @@ import sys, os
 # -- General configuration -----------------------------------------------------
 
 sys.path.append(os.path.abspath('../_sphinx/exts'))
-extensions = ['sphinx.ext.todo', 'includecode']
+extensions = ['sphinx.ext.todo', 'sphinx.ext.mathjax', 'includecode']
 
 templates_path = ['_templates']
 source_suffix = '.rst'
@@ -29,11 +29,10 @@ show_authors = True
 
 html_theme = 'sphinx_rtd_theme'
 html_theme_path = ['../_sphinx/themes']
-html_favicon = '../_sphinx/static/favicon.ico'
 
 html_title = 'Algebird Documentation'
-html_logo = '../_sphinx/static/logo.png'
-#html_favicon = None
+html_logo = None
+html_favicon = None
 
 html_static_path = ['../_sphinx/static']
 
@@ -45,9 +44,11 @@ html_use_index = False
 html_show_sourcelink = False
 html_show_sphinx = False
 html_show_copyright = True
-htmlhelp_basename = 'Akkadoc'
 html_use_smartypants = False
 html_add_permalinks = ''
+
+# ?
+htmlhelp_basename = 'algebirddoc'
 
 html_context = {
   'include_analytics': 'online' in tags
