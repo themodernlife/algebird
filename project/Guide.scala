@@ -9,25 +9,18 @@ import com.typesafe.sbt.site.SphinxSupport.{ enableOutput, generatePdf, generate
 import com.typesafe.sbt.preprocess.Preprocess.{ preprocess, preprocessExts, preprocessVars, simplePreprocess }
 
 object Guide {
-
-  lazy val settings = site.settings ++ site.sphinxSupport() ++ site.publishSite ++ sphinxPreprocessing ++ Seq(
+  lazy val settings = site.settings ++ site.sphinxSupport() ++ sphinxPreprocessing ++ Seq(
     sourceDirectory in Sphinx <<= baseDirectory / "rst",
     sphinxPackages in Sphinx <+= baseDirectory { _ / "_sphinx" / "pygments" },
-    enableOutput in generatePdf in Sphinx := true,
-    enableOutput in generateEpub in Sphinx := true,
     unmanagedSourceDirectories in Test <<= sourceDirectory in Sphinx apply { _ ** "code" get },
-    publishArtifact in Compile := false,
-    //unmanagedSourceDirectories in ScalariformKeys.format in Test <<= unmanagedSourceDirectories in Test,
-    testOptions += Tests.Argument(TestFrameworks.JUnit, "-v", "-a")
-    //reportBinaryIssues := () // disable bin comp check
+    publishArtifact := false
   )
 
   // preprocessing settings for sphinx
   lazy val sphinxPreprocessing = inConfig(Sphinx)(Seq(
     target in preprocess <<= baseDirectory / "rst_preprocessed",
     preprocessExts := Set("rst", "py"),
-    // customization of sphinx @<key>@ replacements, add to all sphinx-using projects
-    // add additional replacements here
+    // @<key>@ replacements, add additional replacements here
     preprocessVars <<= (scalaVersion, version) { (s, v) =>
       val BinVer = """(\d+\.\d+)\.\d+""".r
       Map(

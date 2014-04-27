@@ -4,10 +4,12 @@ import sbt._
 import Keys._
 
 import com.typesafe.sbt.git.GitRunner
+import com.typesafe.sbt.site.SphinxSupport.Sphinx
 import com.typesafe.sbt.SbtGit.GitKeys
 import com.typesafe.sbt.SbtSite.{ site, SiteKeys }
 import com.typesafe.sbt.SbtGhPages.{ ghpages, GhPagesKeys => ghkeys }
 import com.typesafe.sbt.SbtGit.GitKeys.gitRemoteRepo
+
 
 object DocGen {
   val docDirectory = "target/site"
@@ -42,6 +44,7 @@ object DocGen {
         Seq("-sourcepath", rootBase.getAbsolutePath, "-doc-source-url", docSourceUrl)
       },
       Unidoc.unidocDirectory := file(docDirectory),
+      target in Sphinx := file(docDirectory) / "guide",
       gitRemoteRepo := docGenRemoteRepo,
       ghkeys.synchLocal <<= syncLocal
     )
