@@ -10,7 +10,7 @@ import com.typesafe.sbt.preprocess.Preprocess.{ preprocess, preprocessExts, prep
 
 object Guide {
   lazy val settings = site.settings ++ site.sphinxSupport() ++ sphinxPreprocessing ++ Seq(
-    sourceDirectory in Sphinx <<= baseDirectory / "rst",
+    sourceDirectory in Sphinx <<= baseDirectory { _ / "rst" },
     sphinxPackages in Sphinx <+= baseDirectory { _ / "_sphinx" / "pygments" },
     unmanagedSourceDirectories in Test <<= sourceDirectory in Sphinx apply { _ ** "code" get },
     publishArtifact := false
@@ -18,7 +18,7 @@ object Guide {
 
   // preprocessing settings for sphinx
   lazy val sphinxPreprocessing = inConfig(Sphinx)(Seq(
-    target in preprocess <<= baseDirectory / "rst_preprocessed",
+    target in preprocess <<= baseDirectory { _ / "rst_preprocessed" },
     preprocessExts := Set("rst", "py"),
     // @<key>@ replacements, add additional replacements here
     preprocessVars <<= (scalaVersion, version) { (s, v) =>

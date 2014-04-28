@@ -20,11 +20,6 @@ To get started, create a new HyperLogLog monoid.
 
 .. includecode:: ../code/HyperLogLog.scala#create-monoid
 
-
-
-Adding elements
----------------
-
 Now we can add some elements.  To create the HLL instances you can either use the monoid's `apply` method which simply
 aliases `create`
 
@@ -32,9 +27,11 @@ aliases `create`
 
 
 
-
 Estimating cardinalities
 ------------------------
+
+Adding together HLL instances allows you to keep track of the number of distinct elements you've seen so far.
+
 
 
 

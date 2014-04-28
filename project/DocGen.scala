@@ -4,15 +4,19 @@ import sbt._
 import Keys._
 
 import com.typesafe.sbt.git.GitRunner
-import com.typesafe.sbt.site.SphinxSupport.Sphinx
 import com.typesafe.sbt.SbtGit.GitKeys
-import com.typesafe.sbt.SbtSite.{ site, SiteKeys }
+import com.typesafe.sbt.SbtSite.site
+import com.typesafe.sbt.SbtSite.SiteKeys.siteDirectory
 import com.typesafe.sbt.SbtGhPages.{ ghpages, GhPagesKeys => ghkeys }
 import com.typesafe.sbt.SbtGit.GitKeys.gitRemoteRepo
+import sbt.LocalProject
 
 
 object DocGen {
   val docDirectory = "target/site"
+  val guideDirectory = "target/site/guide"
+
+  val uniguide = TaskKey[Unit]("uniguide", "Create unified site for all, including a guide from the xxxx-docs package")
 
   def syncLocal = (ghkeys.updatedRepository, GitKeys.gitRunner, streams) map { (repo, git, s) =>
     cleanSite(repo, git, s) // First, remove 'stale' files.
@@ -44,10 +48,12 @@ object DocGen {
         Seq("-sourcepath", rootBase.getAbsolutePath, "-doc-source-url", docSourceUrl)
       },
       Unidoc.unidocDirectory := file(docDirectory),
-      target in Sphinx := file(docDirectory) / "guide",
       gitRemoteRepo := docGenRemoteRepo,
-      ghkeys.synchLocal <<= syncLocal
+      ghkeys.synchLocal <<= syncLocal,
+      uniguide <<= (Unidoc.unidoc, siteDirectory in LocalProject("algebird-docs"), siteDirectory in LocalProject("algebird")) map { (u, docsSd, rootSd) =>
+        IO.copyDirectory(docsSd, rootSd)
+       }
     )
 
-  lazy val publishSettings = site.settings ++ Unidoc.settings ++ ghpages.settings ++ docGenSettings
+  lazy val publishSettings = Unidoc.settings ++ site.settings ++ ghpages.settings ++ docGenSettings
 }

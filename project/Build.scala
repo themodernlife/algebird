@@ -4,6 +4,10 @@ import sbt._
 import Keys._
 import com.typesafe.tools.mima.plugin.MimaPlugin.mimaDefaultSettings
 import com.typesafe.tools.mima.plugin.MimaKeys.previousArtifact
+import com.typesafe.sbt.site.SphinxSupport._
+import com.typesafe.sbt.SbtSite.SiteKeys.siteDirectory
+import sbt.LocalProject
+import scala.Some
 
 object AlgebirdBuild extends Build {
   def withCross(dep: ModuleID) =
@@ -93,10 +97,14 @@ object AlgebirdBuild extends Build {
     id = "algebird",
     base = file("."),
     settings = sharedSettings ++ DocGen.publishSettings
-    ).settings(
+  ).settings(
     test := { },
     publish := { }, // skip publishing for this root project.
-    publishLocal := { }
+    publishLocal := { },
+    sphinxInputs in Sphinx <<= sphinxInputs in Sphinx in LocalProject(algebirdDocs.id) map { inputs => inputs.copy(tags = inputs.tags :+ "online") },
+    generatedPdf in Sphinx <<= generatedPdf in Sphinx in LocalProject(algebirdDocs.id) map identity,
+    generatedEpub in Sphinx <<= generatedEpub in Sphinx in LocalProject(algebirdDocs.id) map identity,
+    siteDirectory in LocalProject(algebirdDocs.id) <<= target { _ / "site" / "guide" }
   ).aggregate(
     algebirdTest,
     algebirdCore,
