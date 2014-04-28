@@ -3,7 +3,8 @@
 HyperLogLog
 ===========
 
-The HyperLogLog is data structure capable of estimating the cardinality (number of dinstinct values) of a set.  It can do this in a very space efficient way.
+The HyperLogLog is data structure capable of estimating the cardinality (number of dinstinct values) of a set.  It can
+do this in a very space efficient way.
 
 You will need to interact with a few different objects
 
@@ -24,7 +25,8 @@ To get started, create a new HyperLogLog monoid.
 Adding elements
 ---------------
 
-Now we can add some elements.  To create the HLL instances you can either use the monoid's `apply` method which simply aliases `create`
+Now we can add some elements.  To create the HLL instances you can either use the monoid's `apply` method which simply
+aliases `create`
 
 .. includecode:: ../code/HyperLogLog.scala#create-hll
 

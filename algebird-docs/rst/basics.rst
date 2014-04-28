@@ -34,7 +34,9 @@ Examples of semigroups
 Monoids
 =======
 
-A monoid is a semigroup with an identity element.  More formally, given a set :math:`M` and an operation :math:`*`, we say that :math:`(M, *)` is a *monoid* if it satisfies the following properties for any :math:`x, y, z \in M`:
+A monoid is a semigroup with an identity element.  More formally, given a set :math:`M` and an operation
+:math:`*`, we say that :math:`(M, *)` is a *monoid* if it satisfies the following properties
+for any :math:`x, y, z \in M`:
 
 - **Closure** :math:`x * y \in M`
 - **Associativity** :math:`(x  * y)  * z = x * (y * z)`
@@ -80,7 +82,8 @@ Rings
 =====
 
 While a group is defined by a set and a single operation, a ring is defined by a set and two
-operations.  Given a set :math:`R` and operations :math:`*` and :math:`+`, we say that :math:`(R, +, *)` is a ring if it satisfies the following properties:
+operations.  Given a set :math:`R` and operations :math:`*` and :math:`+`, we say that :math:`(R, +, *)` is a ring if
+it satisfies the following properties:
 
 - :math:`(R, +)` is an abelian group
 - For any :math:`x, y \in R`, :math:`x * y \in R`

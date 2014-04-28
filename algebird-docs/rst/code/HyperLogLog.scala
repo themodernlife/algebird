@@ -1,14 +1,10 @@
 package com.twitter.algebird.docs
 
 import org.specs2.mutable._
-import com.twitter.algebird._
-import com.twitter.algebird.Operators._
-
 
 object HyperLogLog {
   //#create-monoid
   import com.twitter.algebird._
-  import com.twitter.algebird.Operators._
 
   implicit val hllMonoid = new HyperLogLogMonoid(12)
   //#create-monoid
@@ -17,7 +13,6 @@ object HyperLogLog {
 object HyperLogLogCreate {
 
   import com.twitter.algebird._
-  import com.twitter.algebird.Operators._
 
   //#create-hll
   implicit def toBytes(s: String) = s.getBytes("utf-8")
