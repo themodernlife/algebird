@@ -1,0 +1,301 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Abstract algebra basics &mdash; Algebird Documentation</title>
+  
+
+  
+  
+
+  
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="top" title="Algebird Documentation" href="index.html"/>
+        <link rel="next" title="Monoids" href="monoids.html"/>
+        <link rel="prev" title="Algebird" href="index.html"/> 
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-nav-search">
+        <a href="index.html" class="fa fa-home"> Algebird</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+        
+        
+            <ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="">Abstract algebra basics</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#semigroups">Semigroups</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#monoids">Monoids</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#groups">Groups</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#rings">Rings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#fields">Fields</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#vector-space">Vector space</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="monoids.html">Monoids</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="monoids/approximate.html">Approximate</a></li>
+<li class="toctree-l2"><a class="reference internal" href="monoids/averaged-value.html">Averaged value</a></li>
+<li class="toctree-l2"><a class="reference internal" href="monoids/bloom-filter.html">Bloom filter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="monoids/decayed-value.html">Decayed value</a></li>
+<li class="toctree-l2"><a class="reference internal" href="monoids/decayed-vector.html">Decayed vector</a></li>
+<li class="toctree-l2"><a class="reference internal" href="monoids/countmin-sketch.html">Count-min sketch</a></li>
+<li class="toctree-l2"><a class="reference internal" href="monoids/hyperloglog.html">HyperLogLog</a></li>
+</ul>
+</li>
+</ul>
+
+        
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="index.html">Algebird</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="index.html">Docs</a> &raquo;</li>
+      
+    <li>Abstract algebra basics</li>
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
+            
+  <span class="target" id="basics"></span><div class="section" id="abstract-algebra-basics">
+<h1>Abstract algebra basics</h1>
+<p>Before getting into the details of Algebird, let's go through a few simple abstract algebra
+definitions.  Folks interested in more details may wish to refer to the excellent
+<a class="reference external" href="http://www.math.usm.edu/perry/old_classes/mat423fa11/notes_25aug2011.pdf">Notes on Abstract Algebra</a>
+from University of Southern Mississipi professor John Perry.</p>
+<div class="section" id="semigroups">
+<h2>Semigroups</h2>
+<p>Given a set <span class="math">\(S\)</span> and an operation <span class="math">\(*\)</span>, we say that <span class="math">\((S, *)\)</span> is a <em>semigroup</em> if it satisfies the
+following properties for any <span class="math">\(x, y, z \in S\)</span>:</p>
+<ul class="simple">
+<li><strong>Closure</strong> <span class="math">\(x * y \in S\)</span></li>
+<li><strong>Associativity</strong> <span class="math">\((x  * y)  * z = x * (y * z)\)</span></li>
+</ul>
+<p>We also say that <span class="math">\(S\)</span> forms a semigroup under <span class="math">\(*\)</span>.</p>
+<div class="section" id="examples-of-semigroups">
+<h3>Examples of semigroups</h3>
+<ul class="simple">
+<li>Strings form a semigroup under concatenation</li>
+</ul>
+</div>
+</div>
+<div class="section" id="monoids">
+<h2>Monoids</h2>
+<p>A monoid is a semigroup with an identity element.  More formally, given a set <span class="math">\(M\)</span> and an operation
+<span class="math">\(*\)</span>, we say that <span class="math">\((M, *)\)</span> is a <em>monoid</em> if it satisfies the following properties
+for any <span class="math">\(x, y, z \in M\)</span>:</p>
+<ul class="simple">
+<li><strong>Closure</strong> <span class="math">\(x * y \in M\)</span></li>
+<li><strong>Associativity</strong> <span class="math">\((x  * y)  * z = x * (y * z)\)</span></li>
+<li><strong>Identity</strong> there exists an <span class="math">\(e \in M\)</span> such that <span class="math">\(e * x = x * e = x\)</span></li>
+</ul>
+<p>We also say that <span class="math">\(M\)</span> is a monoid under <span class="math">\(*\)</span>.</p>
+<div class="section" id="examples-of-monoids">
+<h3>Examples of monoids</h3>
+<ul class="simple">
+<li>The natural numbers <span class="math">\(\mathbb{N}\)</span> form a monoid under addition</li>
+<li><span class="math">\(\mathbb{N}\)</span> also forms a monoid under multiplication</li>
+<li>Strings form a monoid under concatenation (where <tt class="docutils literal"><span class="pre">&quot;&quot;</span></tt> is the identity element)</li>
+</ul>
+</div>
+</div>
+<div class="section" id="groups">
+<h2>Groups</h2>
+<p>We say that <span class="math">\((G, *)\)</span> is a <em>group</em> if it is a monoid that also satisfies the following property:</p>
+<ul class="simple">
+<li><strong>Invertibility</strong> For every <span class="math">\(x \in G\)</span> there is an <span class="math">\(x^{-1}\)</span>
+such that <span class="math">\(x * x^{-1} = x^{-1} * x = e\)</span></li>
+</ul>
+<p>Moreover, it is an <em>abelian group</em> if it satisfies the property:</p>
+<ul class="simple">
+<li><strong>Commutativity</strong> <span class="math">\(x * y = y * x\)</span> for all <span class="math">\(x, y \in G\)</span></li>
+</ul>
+<div class="section" id="examples-of-groups">
+<h3>Examples of groups</h3>
+<ul class="simple">
+<li>The integers, <span class="math">\(\mathbb{Z}\)</span>, are an abelian group under addition</li>
+<li>The natural numbers are <em>not</em> a group under addition (given a number <span class="math">\(x \in
+\mathbb{N}\)</span>, <span class="math">\(-x\)</span> is <em>not</em> in <span class="math">\(\mathbb{N}\)</span>)</li>
+<li>Neither the integers nor the natural numbers are a group under multiplication,
+but the set of rational numbers (<span class="math">\(\frac{n}{d}\)</span> for any
+<span class="math">\(n, d \in \mathbb{Z}\)</span> where <span class="math">\(d \neq 0\)</span>) is a (abelian)
+group under multiplication</li>
+</ul>
+</div>
+</div>
+<div class="section" id="rings">
+<h2>Rings</h2>
+<p>While a group is defined by a set and a single operation, a ring is defined by a set and two
+operations.  Given a set <span class="math">\(R\)</span> and operations <span class="math">\(*\)</span> and <span class="math">\(+\)</span>, we say that <span class="math">\((R, +, *)\)</span> is a ring if
+it satisfies the following properties:</p>
+<ul class="simple">
+<li><span class="math">\((R, +)\)</span> is an abelian group</li>
+<li>For any <span class="math">\(x, y \in R\)</span>, <span class="math">\(x * y \in R\)</span></li>
+<li>For any <span class="math">\(x, y, z \in R\)</span>, <span class="math">\((x * y) * z = x * (y * z)\)</span></li>
+<li>For any <span class="math">\(x, y, z \in R\)</span>, <span class="math">\(x * (y + z) = x * y + x * z\)</span>
+and <span class="math">\((x + y) * z = x * z + y * z\)</span></li>
+</ul>
+<p>Notes on rings:</p>
+<ul class="simple">
+<li>A ring necessarily has an identity under <span class="math">\(+\)</span> called the <em>additive identity</em>
+(typically referred to as <em>zero</em>, <strong>0</strong>)</li>
+<li>A ring does not necessarily have an identity under <span class="math">\(*\)</span> (called the <em>multiplicative identity</em>)</li>
+<li>A ring is not necessarily commutative under <span class="math">\(*\)</span></li>
+<li>A ring does not necessarily satisfy the inverse property under <span class="math">\(*\)</span></li>
+<li>A ring's additive identity does not necessarily have any special properties under <span class="math">\(*\)</span></li>
+</ul>
+<p>A few other types of rings:</p>
+<ul class="simple">
+<li>We say that <span class="math">\((R, +, *)\)</span> is a <em>ring with unity</em> if it has a multiplicative identity,
+referred to as <em>one</em>, or <strong>1</strong>.</li>
+<li>We say that <span class="math">\((R, +, *)\)</span> is a <em>commutative ring</em> if it satisfies the commutative
+property under multiplication, that is for all <span class="math">\(x, y \in R\)</span>, <span class="math">\(x * y = y * x\)</span></li>
+</ul>
+<div class="section" id="examples-of-rings">
+<h3>Examples of rings</h3>
+<ul class="simple">
+<li><span class="math">\((\mathbb{Z}, +, *)\)</span></li>
+<li>The set of square square matrices of a given size are a ring</li>
+</ul>
+</div>
+</div>
+<div class="section" id="fields">
+<h2>Fields</h2>
+<p>A field is a commutative ring in which every non-zero element contains a
+multiplicative inverse. Equivalently, <span class="math">\((F, +, *)\)</span> is a field if
+<span class="math">\((F', *)\)</span> is an abelian group where <span class="math">\(F'\)</span> is the set of non-zero
+elements in <span class="math">\(F\)</span>.</p>
+<div class="section" id="examples-of-fields">
+<h3>Examples of fields</h3>
+<ul class="simple">
+<li>The rational numbers, <span class="math">\(\mathbb{Q}\)</span></li>
+<li>The real numbers, <span class="math">\(\mathbb{R}\)</span></li>
+<li>the complex numbers, <span class="math">\(\mathbb{C}\)</span></li>
+</ul>
+</div>
+</div>
+<div class="section" id="vector-space">
+<h2>Vector space</h2>
+</div>
+</div>
+
+
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="monoids.html" class="btn btn-neutral float-right" title="Monoids">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="index.html" class="btn btn-neutral" title="Algebird"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2011-2014, Twitter Inc.
+      Last updated on Apr 28, 2014.
+    </p>
+  </div>
+
+  <a href="https://github.com/snide/sphinx_rtd_theme">Sphinx theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'0.6.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+      <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

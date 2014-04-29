@@ -1,0 +1,223 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>HyperLogLog &mdash; Algebird Documentation</title>
+  
+
+  
+  
+
+  
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="top" title="Algebird Documentation" href="../index.html"/>
+        <link rel="up" title="Monoids" href="../monoids.html"/>
+        <link rel="prev" title="Count-min sketch" href="countmin-sketch.html"/> 
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-nav-search">
+        <a href="../index.html" class="fa fa-home"> Algebird</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+        
+        
+            <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../basics.html">Abstract algebra basics</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../basics.html#semigroups">Semigroups</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../basics.html#monoids">Monoids</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../basics.html#groups">Groups</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../basics.html#rings">Rings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../basics.html#fields">Fields</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../basics.html#vector-space">Vector space</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="reference internal" href="../monoids.html">Monoids</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="approximate.html">Approximate</a></li>
+<li class="toctree-l2"><a class="reference internal" href="averaged-value.html">Averaged value</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bloom-filter.html">Bloom filter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="decayed-value.html">Decayed value</a></li>
+<li class="toctree-l2"><a class="reference internal" href="decayed-vector.html">Decayed vector</a></li>
+<li class="toctree-l2"><a class="reference internal" href="countmin-sketch.html">Count-min sketch</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="">HyperLogLog</a></li>
+</ul>
+</li>
+</ul>
+
+        
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../index.html">Algebird</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="../monoids.html">Monoids</a> &raquo;</li>
+      
+    <li>HyperLogLog</li>
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
+            
+  <div class="section" id="hyperloglog">
+<span id="id1"></span><h1>HyperLogLog</h1>
+<p>The HyperLogLog is data structure capable of estimating the cardinality (number of dinstinct values) of a set.  It can
+do this in a very space efficient way.</p>
+<p>You will need to interact with a few different objects</p>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">HyperLogLogMonoid</span></tt> - the monoid</li>
+<li><tt class="docutils literal"><span class="pre">HLL</span></tt> - the actual instances that wrap a given value</li>
+<li><tt class="docutils literal"><span class="pre">HyperLogLog</span></tt> - An object with utility methods... you probably shouldn't use it</li>
+</ul>
+<div class="section" id="creating-the-monoid">
+<h2>Creating the monoid</h2>
+<p>To get started, create a new HyperLogLog monoid.</p>
+<div class="highlight-scala"><div class="highlight"><pre><span class="k">import</span> <span class="nn">com.twitter.algebird._</span>
+
+<span class="k">implicit</span> <span class="k">val</span> <span class="n">hllMonoid</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">HyperLogLogMonoid</span><span class="o">(</span><span class="mi">12</span><span class="o">)</span>
+</pre></div>
+</div>
+<p>Now we can add some elements.  To create the HLL instances you can either use the monoid's <cite>apply</cite> method which simply
+aliases <cite>create</cite></p>
+<div class="highlight-scala"><div class="highlight"><pre><span class="k">implicit</span> <span class="k">def</span> <span class="n">toBytes</span><span class="o">(</span><span class="n">s</span><span class="k">:</span> <span class="kt">String</span><span class="o">)</span> <span class="k">=</span> <span class="n">s</span><span class="o">.</span><span class="n">getBytes</span><span class="o">(</span><span class="s">&quot;utf-8&quot;</span><span class="o">)</span>
+
+<span class="k">implicit</span> <span class="k">val</span> <span class="n">hllMonoid</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">HyperLogLogMonoid</span><span class="o">(</span><span class="mi">12</span><span class="o">)</span>
+<span class="k">val</span> <span class="n">a</span> <span class="k">=</span> <span class="n">hllMonoid</span><span class="o">(</span><span class="s">&quot;hello world&quot;</span><span class="o">)</span>
+<span class="k">val</span> <span class="n">b</span> <span class="k">=</span> <span class="n">hllMonoid</span><span class="o">.</span><span class="n">create</span><span class="o">(</span><span class="s">&quot;hello world&quot;</span><span class="o">)</span>
+<span class="c1">//a == b</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="estimating-cardinalities">
+<h2>Estimating cardinalities</h2>
+<p>Adding together HLL instances allows you to keep track of the number of distinct elements you've seen so far.</p>
+</div>
+<div class="section" id="additional-information">
+<h2>Additional information</h2>
+<div class="section" id="choosing-the-number-of-bits">
+<h3>Choosing the number of bits</h3>
+</div>
+<div class="section" id="serializing-to-from-array-bytes">
+<h3>Serializing to/from Array[Bytes]</h3>
+</div>
+</div>
+</div>
+
+
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+      
+        <a href="countmin-sketch.html" class="btn btn-neutral" title="Count-min sketch"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2011-2014, Twitter Inc.
+      Last updated on Apr 28, 2014.
+    </p>
+  </div>
+
+  <a href="https://github.com/snide/sphinx_rtd_theme">Sphinx theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'0.6.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+      <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

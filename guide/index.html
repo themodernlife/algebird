@@ -1,0 +1,235 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Algebird &mdash; Algebird Documentation</title>
+  
+
+  
+  
+
+  
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="top" title="Algebird Documentation" href="#"/>
+        <link rel="next" title="Abstract algebra basics" href="basics.html"/> 
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-nav-search">
+        <a href="#" class="fa fa-home"> Algebird</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+        
+        
+            <ul>
+<li class="toctree-l1"><a class="reference internal" href="basics.html">Abstract algebra basics</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="basics.html#semigroups">Semigroups</a></li>
+<li class="toctree-l2"><a class="reference internal" href="basics.html#monoids">Monoids</a></li>
+<li class="toctree-l2"><a class="reference internal" href="basics.html#groups">Groups</a></li>
+<li class="toctree-l2"><a class="reference internal" href="basics.html#rings">Rings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="basics.html#fields">Fields</a></li>
+<li class="toctree-l2"><a class="reference internal" href="basics.html#vector-space">Vector space</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="monoids.html">Monoids</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="monoids/approximate.html">Approximate</a></li>
+<li class="toctree-l2"><a class="reference internal" href="monoids/averaged-value.html">Averaged value</a></li>
+<li class="toctree-l2"><a class="reference internal" href="monoids/bloom-filter.html">Bloom filter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="monoids/decayed-value.html">Decayed value</a></li>
+<li class="toctree-l2"><a class="reference internal" href="monoids/decayed-vector.html">Decayed vector</a></li>
+<li class="toctree-l2"><a class="reference internal" href="monoids/countmin-sketch.html">Count-min sketch</a></li>
+<li class="toctree-l2"><a class="reference internal" href="monoids/hyperloglog.html">HyperLogLog</a></li>
+</ul>
+</li>
+</ul>
+
+        
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="#">Algebird</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="#">Docs</a> &raquo;</li>
+      
+    <li>Algebird</li>
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
+            
+  <div class="section" id="algebird">
+<span id="index"></span><h1>Algebird</h1>
+<p>Abstract algebra for Scala. This code is targeted at building aggregation systems via
+<a class="reference external" href="https://github.com/twitter/scalding">Scalding</a> or <a class="reference external" href="https://github.com/nathanmarz/storm">Storm</a>. It was originally
+developed as part of Scalding's Matrix API, where Matrices had values which are elements of monoids, groups, or rings.
+Subsequently, it was clear that the code had broader application within Scalding and on other projects within Twitter.</p>
+<p>See the <a class="reference external" href="http://twitter.github.com/algebird">current API documentation</a> for more information.</p>
+<div class="section" id="what-can-you-do-with-algebird">
+<span id="intro"></span><h2>What can you do with Algebird?</h2>
+<p>Algebird allows you to generalize the notion of <em>addition</em> to a much broader array of (exotic!) data structures.  A
+simple example would be something like:</p>
+<div class="highlight-scala"><div class="highlight"><pre><span class="k">import</span> <span class="nn">com.twitter.algebird._</span>
+<span class="k">import</span> <span class="nn">com.twitter.algebird.Operators._</span>
+
+<span class="k">val</span> <span class="n">maxMap</span> <span class="k">=</span> <span class="nc">Map</span><span class="o">(</span><span class="mi">1</span> <span class="o">-&gt;</span> <span class="nc">Max</span><span class="o">(</span><span class="mi">2</span><span class="o">))</span> <span class="o">+</span> <span class="nc">Map</span><span class="o">(</span><span class="mi">1</span> <span class="o">-&gt;</span> <span class="nc">Max</span><span class="o">(</span><span class="mi">3</span><span class="o">))</span> <span class="o">+</span> <span class="nc">Map</span><span class="o">(</span><span class="mi">2</span> <span class="o">-&gt;</span> <span class="nc">Max</span><span class="o">(</span><span class="mi">4</span><span class="o">))</span>
+<span class="c1">// returns Map(2 -&gt; Max(4), 1 -&gt; Max(3))</span>
+</pre></div>
+</div>
+<p>The class <tt class="docutils literal"><span class="pre">Max</span></tt> signifies that the <tt class="docutils literal"><span class="pre">+</span></tt> operator should actually be <em>maximum</em>.  Algebird achieves this by supplying
+implicit objects (often instances of the typeclass <tt class="docutils literal"><span class="pre">Monoid</span></tt>) which handle adding objects together using whatever
+specialized logic is necessary.</p>
+<p>This turns out to be particularly useful in MapReduce-style systems, as monoids can be used to compute sums in parallel
+and combine naturally during reduction to a single value.  Algebird helps you:</p>
+<ul class="simple">
+<li>Model a wide class of &quot;reductions&quot; as a sum on some iterator of a particular value type, for example, average,
+moving average, max/min, set, union, approximate set size (in much less memory with HyperLogLog),
+approximate item counting (using CountMinSketch) and more</li>
+<li>Combine monoid instances naturally across tuples, vectors, maps, options and more standard Scala classes</li>
+<li>Use monoid implementations of interesting approximation algorithms, such as <a class="reference internal" href="monoids/bloom-filter.html#bloom-filter"><em>Bloom filters</em></a>,
+the <a class="reference internal" href="monoids/hyperloglog.html#hyperloglog"><em>HyperLogLog</em></a> and the <a class="reference internal" href="monoids/countmin-sketch.html#countmin-sketch"><em>Count-min sketch</em></a></li>
+</ul>
+<p>Algebird's powerful abstractions allow you to think of these sophisticated operations like you might numbers and add
+them up in Hadoop or online to produce powerful statistics and analytics.</p>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="basics.html">Abstract algebra basics</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="basics.html#semigroups">Semigroups</a></li>
+<li class="toctree-l2"><a class="reference internal" href="basics.html#monoids">Monoids</a></li>
+<li class="toctree-l2"><a class="reference internal" href="basics.html#groups">Groups</a></li>
+<li class="toctree-l2"><a class="reference internal" href="basics.html#rings">Rings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="basics.html#fields">Fields</a></li>
+<li class="toctree-l2"><a class="reference internal" href="basics.html#vector-space">Vector space</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="monoids.html">Monoids</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="monoids/approximate.html">Approximate</a></li>
+<li class="toctree-l2"><a class="reference internal" href="monoids/averaged-value.html">Averaged value</a></li>
+<li class="toctree-l2"><a class="reference internal" href="monoids/bloom-filter.html">Bloom filter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="monoids/decayed-value.html">Decayed value</a></li>
+<li class="toctree-l2"><a class="reference internal" href="monoids/decayed-vector.html">Decayed vector</a></li>
+<li class="toctree-l2"><a class="reference internal" href="monoids/countmin-sketch.html">Count-min sketch</a></li>
+<li class="toctree-l2"><a class="reference internal" href="monoids/hyperloglog.html">HyperLogLog</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+</div>
+
+
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="basics.html" class="btn btn-neutral float-right" title="Abstract algebra basics">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2011-2014, Twitter Inc.
+      Last updated on Apr 28, 2014.
+    </p>
+  </div>
+
+  <a href="https://github.com/snide/sphinx_rtd_theme">Sphinx theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'0.6.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+      <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>
