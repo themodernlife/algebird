@@ -14,3 +14,4 @@ Aggregations
   aggregations/countmin-sketch
   aggregations/hyperloglog
   aggregations/top-k
+  aggregations/space-saver

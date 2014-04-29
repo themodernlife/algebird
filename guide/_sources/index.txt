@@ -46,5 +46,5 @@ them up in Hadoop or online to produce powerful statistics and analytics.
   :maxdepth: 2
 
   basics
-  monoids
+  aggregations
   summing

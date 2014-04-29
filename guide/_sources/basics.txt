@@ -1,7 +1,5 @@
 .. _basics:
 
-.. include:: <isomopf.txt>
-
 #######################
 Abstract algebra basics
 #######################
