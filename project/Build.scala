@@ -6,6 +6,7 @@ import com.typesafe.tools.mima.plugin.MimaPlugin.mimaDefaultSettings
 import com.typesafe.tools.mima.plugin.MimaKeys.previousArtifact
 import com.typesafe.sbt.site.SphinxSupport._
 import com.typesafe.sbt.SbtSite.SiteKeys.siteDirectory
+import com.typesafe.sbt.SbtSite.SiteKeys.makeSite
 import sbt.LocalProject
 import scala.Some
 
@@ -104,7 +105,7 @@ object AlgebirdBuild extends Build {
     sphinxInputs in Sphinx <<= sphinxInputs in Sphinx in LocalProject(algebirdDocs.id) map { inputs => inputs.copy(tags = inputs.tags :+ "online") },
     generatedPdf in Sphinx <<= generatedPdf in Sphinx in LocalProject(algebirdDocs.id) map identity,
     generatedEpub in Sphinx <<= generatedEpub in Sphinx in LocalProject(algebirdDocs.id) map identity,
-    siteDirectory in LocalProject(algebirdDocs.id) <<= target { _ / "site" / "guide" }
+    siteDirectory ~= { _ / "guide" }
   ).aggregate(
     algebirdTest,
     algebirdCore,
@@ -159,7 +160,9 @@ object AlgebirdBuild extends Build {
     libraryDependencies += "com.twitter" %% "bijection-core" % "0.6.2"
   ).dependsOn(algebirdCore, algebirdTest % "test->compile")
 
-  lazy val algebirdDocs = module("docs").settings(Guide.settings:_*).settings(
-    libraryDependencies <+= scalaVersion(specs2Import(_))
-  ).dependsOn(algebirdCore, algebirdTest % "test->compile")
+  lazy val algebirdDocs = module("docs")
+    .settings(Guide.settings:_*)
+    .settings(
+      libraryDependencies <+= scalaVersion(specs2Import(_))
+    ).dependsOn(algebirdCore, algebirdTest % "test->compile")
 }

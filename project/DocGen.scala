@@ -14,9 +14,6 @@ import sbt.LocalProject
 
 object DocGen {
   val docDirectory = "target/site"
-  val guideDirectory = "target/site/guide"
-
-  val uniguide = TaskKey[Unit]("uniguide", "Create unified site for all, including a guide from the xxxx-docs package")
 
   def syncLocal = (ghkeys.updatedRepository, GitKeys.gitRunner, streams) map { (repo, git, s) =>
     cleanSite(repo, git, s) // First, remove 'stale' files.
@@ -49,11 +46,9 @@ object DocGen {
       },
       Unidoc.unidocDirectory := file(docDirectory),
       gitRemoteRepo := docGenRemoteRepo,
-      ghkeys.synchLocal <<= syncLocal,
-      uniguide <<= (Unidoc.unidoc, siteDirectory in LocalProject("algebird-docs"), siteDirectory in LocalProject("algebird")) map { (u, docsSd, rootSd) =>
-        IO.copyDirectory(docsSd, rootSd)
-       }
+      ghkeys.synchLocal <<= syncLocal
     )
 
-  lazy val publishSettings = Unidoc.settings ++ site.settings ++ ghpages.settings ++ docGenSettings
+  lazy val publishSettings = Unidoc.settings ++ site.settings ++ ghpages.settings ++
+    docGenSettings ++ Guide.settings
 }
