@@ -47,3 +47,4 @@ them up in Hadoop or online to produce powerful statistics and analytics.
 
   basics
   monoids
+  summing
