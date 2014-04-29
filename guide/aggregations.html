@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Monoids &mdash; Algebird Documentation</title>
+  <title>Aggregations &mdash; Algebird Documentation</title>
   
 
   
@@ -28,9 +28,7 @@
   
 
   
-    <link rel="top" title="Algebird Documentation" href="index.html"/>
-        <link rel="next" title="Approximate" href="monoids/approximate.html"/>
-        <link rel="prev" title="Abstract algebra basics" href="basics.html"/> 
+    <link rel="top" title="Algebird Documentation" href="index.html"/> 
 
   
   <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
@@ -57,7 +55,7 @@
       <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
         
         
-            <ul class="current">
+            <ul>
 <li class="toctree-l1"><a class="reference internal" href="basics.html">Abstract algebra basics</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="basics.html#semigroups">Semigroups</a></li>
 <li class="toctree-l2"><a class="reference internal" href="basics.html#monoids">Monoids</a></li>
@@ -67,14 +65,15 @@
 <li class="toctree-l2"><a class="reference internal" href="basics.html#vector-space">Vector space</a></li>
 </ul>
 </li>
-<li class="toctree-l1 current"><a class="current reference internal" href="">Monoids</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="monoids/approximate.html">Approximate</a></li>
-<li class="toctree-l2"><a class="reference internal" href="monoids/averaged-value.html">Averaged value</a></li>
-<li class="toctree-l2"><a class="reference internal" href="monoids/bloom-filter.html">Bloom filter</a></li>
-<li class="toctree-l2"><a class="reference internal" href="monoids/decayed-value.html">Decayed value</a></li>
-<li class="toctree-l2"><a class="reference internal" href="monoids/decayed-vector.html">Decayed vector</a></li>
-<li class="toctree-l2"><a class="reference internal" href="monoids/countmin-sketch.html">Count-min sketch</a></li>
-<li class="toctree-l2"><a class="reference internal" href="monoids/hyperloglog.html">HyperLogLog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="summing.html">Miscellaneous summing utilities</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="summing.html#summingqueue">SummingQueue</a></li>
+<li class="toctree-l2"><a class="reference internal" href="summing.html#summingiterator">SummingIterator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="summing.html#summingcache">SummingCache</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="summing.html#stateful-summing">Stateful summing</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="summing.html#sumall">SumAll</a></li>
+<li class="toctree-l2"><a class="reference internal" href="summing.html#bufferedsumall">BufferedSumAll</a></li>
 </ul>
 </li>
 </ul>
@@ -100,7 +99,7 @@
   <ul class="wy-breadcrumbs">
     <li><a href="index.html">Docs</a> &raquo;</li>
       
-    <li>Monoids</li>
+    <li>Aggregations</li>
       <li class="wy-breadcrumbs-aside">
         
       </li>
@@ -109,22 +108,23 @@
 </div>
           <div role="main">
             
-  <div class="section" id="monoids">
-<h1>Monoids</h1>
+  <div class="section" id="aggregations">
+<span id="id1"></span><h1>Aggregations</h1>
 <div class="toctree-wrapper compound">
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="monoids/approximate.html">Approximate</a></li>
-<li class="toctree-l1"><a class="reference internal" href="monoids/averaged-value.html">Averaged value</a></li>
-<li class="toctree-l1"><a class="reference internal" href="monoids/bloom-filter.html">Bloom filter</a></li>
-<li class="toctree-l1"><a class="reference internal" href="monoids/decayed-value.html">Decayed value</a></li>
-<li class="toctree-l1"><a class="reference internal" href="monoids/decayed-vector.html">Decayed vector</a></li>
-<li class="toctree-l1"><a class="reference internal" href="monoids/countmin-sketch.html">Count-min sketch</a></li>
-<li class="toctree-l1"><a class="reference internal" href="monoids/hyperloglog.html">HyperLogLog</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="monoids/hyperloglog.html#creating-the-monoid">Creating the monoid</a></li>
-<li class="toctree-l2"><a class="reference internal" href="monoids/hyperloglog.html#estimating-cardinalities">Estimating cardinalities</a></li>
-<li class="toctree-l2"><a class="reference internal" href="monoids/hyperloglog.html#additional-information">Additional information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="aggregations/approximate.html">Approximate</a></li>
+<li class="toctree-l1"><a class="reference internal" href="aggregations/averaged-value.html">Averaged value</a></li>
+<li class="toctree-l1"><a class="reference internal" href="aggregations/bloom-filter.html">Bloom filter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="aggregations/decayed-value.html">Decayed value</a></li>
+<li class="toctree-l1"><a class="reference internal" href="aggregations/decayed-vector.html">Decayed vector</a></li>
+<li class="toctree-l1"><a class="reference internal" href="aggregations/countmin-sketch.html">Count-min sketch</a></li>
+<li class="toctree-l1"><a class="reference internal" href="aggregations/hyperloglog.html">HyperLogLog</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="aggregations/hyperloglog.html#creating-the-monoid">Creating the monoid</a></li>
+<li class="toctree-l2"><a class="reference internal" href="aggregations/hyperloglog.html#estimating-cardinalities">Estimating cardinalities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="aggregations/hyperloglog.html#additional-information">Additional information</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="aggregations/top-k.html">Top-K</a></li>
 </ul>
 </div>
 </div>
@@ -132,15 +132,6 @@
 
           </div>
           <footer>
-  
-    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-      
-        <a href="monoids/approximate.html" class="btn btn-neutral float-right" title="Approximate">Next <span class="fa fa-arrow-circle-right"></span></a>
-      
-      
-        <a href="basics.html" class="btn btn-neutral" title="Abstract algebra basics"><span class="fa fa-arrow-circle-left"></span> Previous</a>
-      
-    </div>
   
 
   <hr/>

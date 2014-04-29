@@ -66,14 +66,15 @@
 <li class="toctree-l2"><a class="reference internal" href="basics.html#vector-space">Vector space</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="monoids.html">Monoids</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="monoids/approximate.html">Approximate</a></li>
-<li class="toctree-l2"><a class="reference internal" href="monoids/averaged-value.html">Averaged value</a></li>
-<li class="toctree-l2"><a class="reference internal" href="monoids/bloom-filter.html">Bloom filter</a></li>
-<li class="toctree-l2"><a class="reference internal" href="monoids/decayed-value.html">Decayed value</a></li>
-<li class="toctree-l2"><a class="reference internal" href="monoids/decayed-vector.html">Decayed vector</a></li>
-<li class="toctree-l2"><a class="reference internal" href="monoids/countmin-sketch.html">Count-min sketch</a></li>
-<li class="toctree-l2"><a class="reference internal" href="monoids/hyperloglog.html">HyperLogLog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="summing.html">Miscellaneous summing utilities</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="summing.html#summingqueue">SummingQueue</a></li>
+<li class="toctree-l2"><a class="reference internal" href="summing.html#summingiterator">SummingIterator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="summing.html#summingcache">SummingCache</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="summing.html#stateful-summing">Stateful summing</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="summing.html#sumall">SumAll</a></li>
+<li class="toctree-l2"><a class="reference internal" href="summing.html#bufferedsumall">BufferedSumAll</a></li>
 </ul>
 </li>
 </ul>
@@ -136,8 +137,8 @@ and combine naturally during reduction to a single value.  Algebird helps you:</
 moving average, max/min, set, union, approximate set size (in much less memory with HyperLogLog),
 approximate item counting (using CountMinSketch) and more</li>
 <li>Combine monoid instances naturally across tuples, vectors, maps, options and more standard Scala classes</li>
-<li>Use monoid implementations of interesting approximation algorithms, such as <a class="reference internal" href="monoids/bloom-filter.html#bloom-filter"><em>Bloom filters</em></a>,
-the <a class="reference internal" href="monoids/hyperloglog.html#hyperloglog"><em>HyperLogLog</em></a> and the <a class="reference internal" href="monoids/countmin-sketch.html#countmin-sketch"><em>Count-min sketch</em></a></li>
+<li>Use monoid implementations of interesting approximation algorithms, such as <a class="reference internal" href="aggregations/bloom-filter.html#bloom-filter"><em>Bloom filters</em></a>,
+the <a class="reference internal" href="aggregations/hyperloglog.html#hyperloglog"><em>HyperLogLog</em></a> and the <a class="reference internal" href="aggregations/countmin-sketch.html#countmin-sketch"><em>Count-min sketch</em></a></li>
 </ul>
 <p>Algebird's powerful abstractions allow you to think of these sophisticated operations like you might numbers and add
 them up in Hadoop or online to produce powerful statistics and analytics.</p>
@@ -152,14 +153,15 @@ them up in Hadoop or online to produce powerful statistics and analytics.</p>
 <li class="toctree-l2"><a class="reference internal" href="basics.html#vector-space">Vector space</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="monoids.html">Monoids</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="monoids/approximate.html">Approximate</a></li>
-<li class="toctree-l2"><a class="reference internal" href="monoids/averaged-value.html">Averaged value</a></li>
-<li class="toctree-l2"><a class="reference internal" href="monoids/bloom-filter.html">Bloom filter</a></li>
-<li class="toctree-l2"><a class="reference internal" href="monoids/decayed-value.html">Decayed value</a></li>
-<li class="toctree-l2"><a class="reference internal" href="monoids/decayed-vector.html">Decayed vector</a></li>
-<li class="toctree-l2"><a class="reference internal" href="monoids/countmin-sketch.html">Count-min sketch</a></li>
-<li class="toctree-l2"><a class="reference internal" href="monoids/hyperloglog.html">HyperLogLog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="summing.html">Miscellaneous summing utilities</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="summing.html#summingqueue">SummingQueue</a></li>
+<li class="toctree-l2"><a class="reference internal" href="summing.html#summingiterator">SummingIterator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="summing.html#summingcache">SummingCache</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="summing.html#stateful-summing">Stateful summing</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="summing.html#sumall">SumAll</a></li>
+<li class="toctree-l2"><a class="reference internal" href="summing.html#bufferedsumall">BufferedSumAll</a></li>
 </ul>
 </li>
 </ul>

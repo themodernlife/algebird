@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Search &mdash; Algebird Documentation</title>
+  <title>Miscellaneous summing utilities &mdash; Algebird Documentation</title>
   
 
   
@@ -28,7 +28,8 @@
   
 
   
-    <link rel="top" title="Algebird Documentation" href="index.html"/> 
+    <link rel="top" title="Algebird Documentation" href="index.html"/>
+        <link rel="prev" title="Abstract algebra basics" href="basics.html"/> 
 
   
   <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
@@ -44,7 +45,7 @@
       <div class="wy-side-nav-search">
         <a href="index.html" class="fa fa-home"> Algebird</a>
         <div role="search">
-  <form id ="rtd-search-form" class="wy-form" action="#" method="get">
+  <form id ="rtd-search-form" class="wy-form" action="search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
@@ -55,7 +56,7 @@
       <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
         
         
-            <ul>
+            <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="basics.html">Abstract algebra basics</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="basics.html#semigroups">Semigroups</a></li>
 <li class="toctree-l2"><a class="reference internal" href="basics.html#monoids">Monoids</a></li>
@@ -65,15 +66,15 @@
 <li class="toctree-l2"><a class="reference internal" href="basics.html#vector-space">Vector space</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="summing.html">Miscellaneous summing utilities</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="summing.html#summingqueue">SummingQueue</a></li>
-<li class="toctree-l2"><a class="reference internal" href="summing.html#summingiterator">SummingIterator</a></li>
-<li class="toctree-l2"><a class="reference internal" href="summing.html#summingcache">SummingCache</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="">Miscellaneous summing utilities</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#summingqueue">SummingQueue</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#summingiterator">SummingIterator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#summingcache">SummingCache</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="summing.html#stateful-summing">Stateful summing</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="summing.html#sumall">SumAll</a></li>
-<li class="toctree-l2"><a class="reference internal" href="summing.html#bufferedsumall">BufferedSumAll</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#stateful-summing">Stateful summing</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#sumall">SumAll</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#bufferedsumall">BufferedSumAll</a></li>
 </ul>
 </li>
 </ul>
@@ -99,7 +100,7 @@
   <ul class="wy-breadcrumbs">
     <li><a href="index.html">Docs</a> &raquo;</li>
       
-    <li></li>
+    <li>Miscellaneous summing utilities</li>
       <li class="wy-breadcrumbs-aside">
         
       </li>
@@ -108,22 +109,40 @@
 </div>
           <div role="main">
             
-  <noscript>
-  <div id="fallback" class="admonition warning">
-    <p class="last">
-      Please activate JavaScript to enable the search
-      functionality.
-    </p>
-  </div>
-  </noscript>
+  <div class="section" id="miscellaneous-summing-utilities">
+<span id="summing"></span><h1>Miscellaneous summing utilities</h1>
+<p>Some useful classes for summing things</p>
+<div class="section" id="summingqueue">
+<h2>SummingQueue</h2>
+</div>
+<div class="section" id="summingiterator">
+<h2>SummingIterator</h2>
+</div>
+<div class="section" id="summingcache">
+<h2>SummingCache</h2>
+</div>
+</div>
+<div class="section" id="stateful-summing">
+<h1>Stateful summing</h1>
+<p>What is it?</p>
+<div class="section" id="sumall">
+<h2>SumAll</h2>
+</div>
+<div class="section" id="bufferedsumall">
+<h2>BufferedSumAll</h2>
+</div>
+</div>
 
-  
-  <div id="search-results">
-  
-  </div>
 
           </div>
           <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+      
+        <a href="basics.html" class="btn btn-neutral" title="Abstract algebra basics"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
   
 
   <hr/>
@@ -161,7 +180,6 @@
       <script type="text/javascript" src="_static/underscore.js"></script>
       <script type="text/javascript" src="_static/doctools.js"></script>
       <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-      <script type="text/javascript" src="_static/searchtools.js"></script>
 
   
 
@@ -177,14 +195,7 @@
           SphinxRtdTheme.StickyNav.enable();
       });
   </script>
-  
-  <script type="text/javascript">
-    jQuery(function() { Search.loadIndex("searchindex.js"); });
-  </script>
-  
-  <script type="text/javascript" id="searchindexloader"></script>
    
-
 
 </body>
 </html>

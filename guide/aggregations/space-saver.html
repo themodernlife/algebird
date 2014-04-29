@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Count-min sketch &mdash; Algebird Documentation</title>
+  <title>Space-Saver &mdash; Algebird Documentation</title>
   
 
   
@@ -28,10 +28,7 @@
   
 
   
-    <link rel="top" title="Algebird Documentation" href="../index.html"/>
-        <link rel="up" title="Monoids" href="../monoids.html"/>
-        <link rel="next" title="HyperLogLog" href="hyperloglog.html"/>
-        <link rel="prev" title="Decayed vector" href="decayed-vector.html"/> 
+    <link rel="top" title="Algebird Documentation" href="../index.html"/> 
 
   
   <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
@@ -58,7 +55,7 @@
       <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
         
         
-            <ul class="current">
+            <ul>
 <li class="toctree-l1"><a class="reference internal" href="../basics.html">Abstract algebra basics</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../basics.html#semigroups">Semigroups</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../basics.html#monoids">Monoids</a></li>
@@ -68,14 +65,15 @@
 <li class="toctree-l2"><a class="reference internal" href="../basics.html#vector-space">Vector space</a></li>
 </ul>
 </li>
-<li class="toctree-l1 current"><a class="reference internal" href="../monoids.html">Monoids</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="approximate.html">Approximate</a></li>
-<li class="toctree-l2"><a class="reference internal" href="averaged-value.html">Averaged value</a></li>
-<li class="toctree-l2"><a class="reference internal" href="bloom-filter.html">Bloom filter</a></li>
-<li class="toctree-l2"><a class="reference internal" href="decayed-value.html">Decayed value</a></li>
-<li class="toctree-l2"><a class="reference internal" href="decayed-vector.html">Decayed vector</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="">Count-min sketch</a></li>
-<li class="toctree-l2"><a class="reference internal" href="hyperloglog.html">HyperLogLog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../summing.html">Miscellaneous summing utilities</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../summing.html#summingqueue">SummingQueue</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../summing.html#summingiterator">SummingIterator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../summing.html#summingcache">SummingCache</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../summing.html#stateful-summing">Stateful summing</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../summing.html#sumall">SumAll</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../summing.html#bufferedsumall">BufferedSumAll</a></li>
 </ul>
 </li>
 </ul>
@@ -101,9 +99,7 @@
   <ul class="wy-breadcrumbs">
     <li><a href="../index.html">Docs</a> &raquo;</li>
       
-          <li><a href="../monoids.html">Monoids</a> &raquo;</li>
-      
-    <li>Count-min sketch</li>
+    <li>Space-Saver</li>
       <li class="wy-breadcrumbs-aside">
         
       </li>
@@ -112,30 +108,13 @@
 </div>
           <div role="main">
             
-  <div class="section" id="count-min-sketch">
-<span id="countmin-sketch"></span><h1>Count-min sketch</h1>
-<p>From wikipedia</p>
-<blockquote>
-<div><p>The Count–min sketch (or CM sketch) is a probabilistic sub-linear space streaming algorithm
-which can be used to summarize a data stream in many different ways.
-The algorithm was invented in 2003 by Graham Cormode and S. Muthu Muthukrishnan.</p>
-<p>Count–min sketches are somewhat similar to Bloom filters; the main distinction is that Bloom filters represent sets, while CM sketches represent multisets and frequency tables.</p>
-</div></blockquote>
-<p>That's great.</p>
+  <div class="section" id="space-saver">
+<span id="id1"></span><h1>Space-Saver</h1>
 </div>
 
 
           </div>
           <footer>
-  
-    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-      
-        <a href="hyperloglog.html" class="btn btn-neutral float-right" title="HyperLogLog">Next <span class="fa fa-arrow-circle-right"></span></a>
-      
-      
-        <a href="decayed-vector.html" class="btn btn-neutral" title="Decayed vector"><span class="fa fa-arrow-circle-left"></span> Previous</a>
-      
-    </div>
   
 
   <hr/>
