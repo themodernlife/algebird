@@ -20,8 +20,9 @@ To get started, create a new HyperLogLog monoid.
 
 .. includecode:: ../code/HyperLogLog.scala#create-monoid
 
-Now we can add some elements.  To create the HLL instances you can either use the monoid's `apply` method which simply
-aliases `create`
+The HyperLogLog monoid adds instances of `HLL`. `HLL` is basially a wrapper type
+that you can create using either the `apply` or `create` method on the monoid (`create`
+is just an alias for `apply`).
 
 .. includecode:: ../code/HyperLogLog.scala#create-hll
 
