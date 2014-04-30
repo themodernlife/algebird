@@ -127,7 +127,30 @@
             
   <div class="section" id="decayed-value">
 <span id="id1"></span><h1>Decayed value</h1>
-<p>It's groovy.</p>
+<p>The Decayed Value can be used as a sort of windowed moving average.  Instead of storing the last <span class="math">\(N\)</span> points
+(which requires memory <span class="math">\(O(N)\)</span>) a decayed value only requires <span class="math">\(O(1)\)</span> memory.</p>
+<p>You can read more about different kinds of averages at <a class="reference external" href="http://donlehmanjr.com/Science/03%20Decay%20Ave/032.htm">http://donlehmanjr.com/Science/03%20Decay%20Ave/032.htm</a>.</p>
+<p>To use DecayedValue:</p>
+<div class="highlight-scala"><div class="highlight"><pre><span class="k">import</span> <span class="nn">com.twitter.algebird._</span>
+
+<span class="k">val</span> <span class="n">data</span> <span class="k">=</span> <span class="o">{</span>
+  <span class="k">val</span> <span class="n">rand</span> <span class="k">=</span> <span class="k">new</span> <span class="n">scala</span><span class="o">.</span><span class="n">util</span><span class="o">.</span><span class="nc">Random</span><span class="o">(</span><span class="mi">12345</span><span class="o">)</span>
+  <span class="o">(</span><span class="mi">1</span> <span class="n">to</span> <span class="mi">100</span><span class="o">).</span><span class="n">map</span> <span class="o">{</span> <span class="k">_</span> <span class="k">=&gt;</span> <span class="n">rand</span><span class="o">.</span><span class="n">nextInt</span><span class="o">(</span><span class="mi">1000</span><span class="o">).</span><span class="n">toDouble</span> <span class="o">}.</span><span class="n">toSeq</span>
+<span class="o">}</span>
+
+<span class="k">val</span> <span class="n">halfLife</span> <span class="k">=</span> <span class="mf">10.0</span>
+<span class="k">val</span> <span class="n">normalization</span> <span class="k">=</span> <span class="n">halfLife</span> <span class="o">/</span> <span class="n">math</span><span class="o">.</span><span class="n">log</span><span class="o">(</span><span class="mi">2</span><span class="o">)</span>
+
+<span class="k">implicit</span> <span class="k">val</span> <span class="n">monoid</span> <span class="k">=</span> <span class="nc">DecayedValue</span><span class="o">.</span><span class="n">monoidWithEpsilon</span><span class="o">(</span><span class="mi">1</span><span class="n">e</span><span class="o">-</span><span class="mi">3</span><span class="o">)</span>
+
+<span class="n">data</span><span class="o">.</span><span class="n">zipWithIndex</span><span class="o">.</span><span class="n">scanLeft</span><span class="o">(</span><span class="nc">DecayedValue</span><span class="o">.</span><span class="n">zero</span><span class="o">)</span> <span class="o">{</span> <span class="k">case</span> <span class="o">(</span><span class="n">previous</span><span class="o">,</span> <span class="o">(</span><span class="n">value</span><span class="o">,</span> <span class="n">time</span><span class="o">))</span> <span class="k">=&gt;</span>
+  <span class="k">val</span> <span class="n">decayed</span> <span class="k">=</span> <span class="nc">Monoid</span><span class="o">.</span><span class="n">plus</span><span class="o">(</span><span class="n">previous</span><span class="o">,</span> <span class="nc">DecayedValue</span><span class="o">.</span><span class="n">build</span><span class="o">(</span><span class="n">value</span><span class="o">,</span> <span class="n">time</span><span class="o">,</span> <span class="n">halfLife</span><span class="o">))</span>
+  <span class="n">println</span><span class="o">(</span><span class="s">&quot;At %d: decayed=%f&quot;</span><span class="o">,</span> <span class="n">time</span><span class="o">,</span> <span class="o">(</span><span class="n">decayed</span><span class="o">.</span><span class="n">value</span> <span class="o">/</span> <span class="n">normalization</span><span class="o">))</span>
+  <span class="n">decayed</span>
+<span class="o">}</span>
+<span class="c1">// prints At 0: decayed=17.397994...</span>
+</pre></div>
+</div>
 </div>
 
 

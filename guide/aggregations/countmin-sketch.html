@@ -152,7 +152,7 @@ where N is the total size of the stream so far.</p>
 <p>See <a class="reference external" href="http://www.eecs.harvard.edu/~michaelm/CS222/countmin.pdf">http://www.eecs.harvard.edu/~michaelm/CS222/countmin.pdf</a> for technical details,
 including proofs of the estimates and error bounds used in this implementation.</p>
 <div class="section" id="using-count-min-sketch">
-<h2>Using Count-min sketch</h2>
+<h2>Using Count-min Sketch</h2>
 <p>Usage of the CMS is similar to using the HyperLogLog or BloomFilter.  Basically you need to create an implicit monoid,
 wrap your values in a <tt class="docutils literal"><span class="pre">CMS</span></tt> object and then add the <tt class="docutils literal"><span class="pre">CMS</span></tt> instances together.  You can query the final <tt class="docutils literal"><span class="pre">CMS</span></tt>
 for things like the set of &quot;heavy-hitters&quot; (most frequently occurring items).</p>

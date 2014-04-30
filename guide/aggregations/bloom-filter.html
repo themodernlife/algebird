@@ -133,7 +133,7 @@
 is used to test whether an element is a member of a set. False positive matches are possible, but false negatives
 are not; i.e. a query returns either &quot;possibly in set&quot; or &quot;definitely not in set&quot;... The more elements that are
 added to the set, the larger the probability of false positives.</div></blockquote>
-<p>As an example</p>
+<p>Here's an example of using Bloom Filter:</p>
 <div class="highlight-scala"><div class="highlight"><pre><span class="k">import</span> <span class="nn">com.twitter.algebird._</span>
 <span class="k">import</span> <span class="nn">com.twitter.algebird.Operators._</span>
 
@@ -153,9 +153,6 @@ added to the set, the larger the probability of false positives.</div></blockquo
 <span class="n">combined</span><span class="o">.</span><span class="n">contains</span><span class="o">(</span><span class="s">&quot;alice&quot;</span><span class="o">)</span>
 <span class="c1">// both are true with 99% probability</span>
 </pre></div>
-</div>
-<div class="section" id="creating-the-monoid">
-<h2>Creating the monoid</h2>
 </div>
 </div>
 
