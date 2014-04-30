@@ -9,9 +9,10 @@ Aggregations
   aggregations/approximate
   aggregations/averaged-value
   aggregations/bloom-filter
+  aggregations/countmin-sketch
   aggregations/decayed-value
   aggregations/decayed-vector
-  aggregations/countmin-sketch
   aggregations/hyperloglog
-  aggregations/top-k
   aggregations/space-saver
+  aggregations/top-k
+

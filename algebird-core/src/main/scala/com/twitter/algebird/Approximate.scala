@@ -156,7 +156,7 @@ object Approximate {
   // Not a group/ring:
   // negate fails: x - x != 0, because with some probability the bound is bad.
   // distributive fails because a*b + a*c ignores that a is either in or out
-  // of the bound, and counts it idependently.
+  // of the bound, and counts it independently.
   implicit def monoid[N](implicit n: Numeric[N]): Monoid[Approximate[N]] = {
     // avoid capturing the Numeric:
     val z = Approximate.zero[N]
