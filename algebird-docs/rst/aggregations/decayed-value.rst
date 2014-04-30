@@ -3,11 +3,11 @@
 Decayed value
 =============
 
-The Decayed Value can be used as a sort of windowed moving average.  Instead of storing the last :math:`N` points with
+The Decayed Value can be used as a sort of windowed moving average.  Instead of storing the last :math:`N` points
 (which requires memory :math:`O(N)`) a decayed value only requires :math:`O(1)` memory.
 
 You can read more about different kinds of averages at http://donlehmanjr.com/Science/03%20Decay%20Ave/032.htm.
 
-To use Decayed Value:
+To use DecayedValue:
 
-.. includecode::
+.. includecode:: ../code/DecayedValue.scala#usage

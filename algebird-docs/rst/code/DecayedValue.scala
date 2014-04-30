@@ -3,6 +3,7 @@ import java.io.{PrintWriter, StringWriter}
 import org.specs2.mutable.Specification
 
 object DecayedValueDemo1 {
+  //#usage
   import com.twitter.algebird._
 
   val data = {
