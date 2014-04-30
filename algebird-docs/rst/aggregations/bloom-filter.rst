@@ -10,10 +10,6 @@ From Wikipedia
     are not; i.e. a query returns either "possibly in set" or "definitely not in set"... The more elements that are
     added to the set, the larger the probability of false positives.
 
-As an example
+Here's an example of using Bloom Filter:
 
 .. includecode:: ../code/BloomFilter.scala#example
-
-
-Creating the monoid
--------------------

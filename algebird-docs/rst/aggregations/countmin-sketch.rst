@@ -34,7 +34,7 @@ See http://www.eecs.harvard.edu/~michaelm/CS222/countmin.pdf for technical detai
 including proofs of the estimates and error bounds used in this implementation.
 
 
-Using Count-min sketch
+Using Count-min Sketch
 ----------------------
 
 Usage of the CMS is similar to using the HyperLogLog or BloomFilter.  Basically you need to create an implicit monoid,
