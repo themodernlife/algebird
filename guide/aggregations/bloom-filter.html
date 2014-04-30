@@ -30,7 +30,7 @@
   
     <link rel="top" title="Algebird Documentation" href="../index.html"/>
         <link rel="up" title="Aggregations" href="../aggregations.html"/>
-        <link rel="next" title="Decayed value" href="decayed-value.html"/>
+        <link rel="next" title="Count-min sketch" href="countmin-sketch.html"/>
         <link rel="prev" title="Averaged value" href="averaged-value.html"/> 
 
   
@@ -72,12 +72,12 @@
 <li class="toctree-l2"><a class="reference internal" href="approximate.html">Approximate</a></li>
 <li class="toctree-l2"><a class="reference internal" href="averaged-value.html">Averaged value</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="">Bloom filter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="countmin-sketch.html">Count-min sketch</a></li>
 <li class="toctree-l2"><a class="reference internal" href="decayed-value.html">Decayed value</a></li>
 <li class="toctree-l2"><a class="reference internal" href="decayed-vector.html">Decayed vector</a></li>
-<li class="toctree-l2"><a class="reference internal" href="countmin-sketch.html">Count-min sketch</a></li>
 <li class="toctree-l2"><a class="reference internal" href="hyperloglog.html">HyperLogLog</a></li>
-<li class="toctree-l2"><a class="reference internal" href="top-k.html">Top-K</a></li>
 <li class="toctree-l2"><a class="reference internal" href="space-saver.html">Space-Saver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="top-k.html">Top-K</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../summing.html">Miscellaneous summing utilities</a><ul>
@@ -86,9 +86,9 @@
 <li class="toctree-l2"><a class="reference internal" href="../summing.html#summingcache">SummingCache</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../summing.html#stateful-summing">Stateful summing</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../summing.html#sumall">SumAll</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../summing.html#bufferedsumall">BufferedSumAll</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../stateful-summing.html">Stateful summing</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../stateful-summing.html#sumall">SumAll</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../stateful-summing.html#bufferedsumall">BufferedSumAll</a></li>
 </ul>
 </li>
 </ul>
@@ -127,7 +127,36 @@
             
   <div class="section" id="bloom-filter">
 <span id="id1"></span><h1>Bloom filter</h1>
-<p>Bloomin' onion</p>
+<p>From Wikipedia</p>
+<blockquote>
+<div>A Bloom filter is a space-efficient probabilistic data structure, conceived by Burton Howard Bloom in 1970, that
+is used to test whether an element is a member of a set. False positive matches are possible, but false negatives
+are not; i.e. a query returns either &quot;possibly in set&quot; or &quot;definitely not in set&quot;... The more elements that are
+added to the set, the larger the probability of false positives.</div></blockquote>
+<p>As an example</p>
+<div class="highlight-scala"><div class="highlight"><pre><span class="k">import</span> <span class="nn">com.twitter.algebird._</span>
+<span class="k">import</span> <span class="nn">com.twitter.algebird.Operators._</span>
+
+<span class="k">implicit</span> <span class="k">val</span> <span class="n">monoid</span> <span class="k">=</span> <span class="nc">BloomFilter</span><span class="o">(</span><span class="mi">200</span><span class="o">,</span> <span class="mf">0.01</span><span class="o">)</span>
+
+<span class="k">val</span> <span class="n">bf1</span> <span class="k">=</span> <span class="n">monoid</span><span class="o">.</span><span class="n">create</span><span class="o">(</span><span class="s">&quot;alice&quot;</span><span class="o">)</span>
+<span class="k">val</span> <span class="n">bf2</span> <span class="k">=</span> <span class="n">monoid</span><span class="o">.</span><span class="n">create</span><span class="o">(</span><span class="s">&quot;bob&quot;</span><span class="o">)</span>
+
+<span class="n">bf1</span><span class="o">.</span><span class="n">contains</span><span class="o">(</span><span class="s">&quot;bob&quot;</span><span class="o">)</span>
+<span class="c1">// definitely false</span>
+
+<span class="n">bf2</span><span class="o">.</span><span class="n">contains</span><span class="o">(</span><span class="s">&quot;alice&quot;</span><span class="o">)</span>
+<span class="c1">// definitely false</span>
+
+<span class="k">val</span> <span class="n">combined</span> <span class="k">=</span> <span class="n">bf1</span> <span class="o">+</span> <span class="n">bf2</span>
+<span class="n">combined</span><span class="o">.</span><span class="n">contains</span><span class="o">(</span><span class="s">&quot;bob&quot;</span><span class="o">)</span>
+<span class="n">combined</span><span class="o">.</span><span class="n">contains</span><span class="o">(</span><span class="s">&quot;alice&quot;</span><span class="o">)</span>
+<span class="c1">// both are true with 99% probability</span>
+</pre></div>
+</div>
+<div class="section" id="creating-the-monoid">
+<h2>Creating the monoid</h2>
+</div>
 </div>
 
 
@@ -136,7 +165,7 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="decayed-value.html" class="btn btn-neutral float-right" title="Decayed value">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="countmin-sketch.html" class="btn btn-neutral float-right" title="Count-min sketch">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="averaged-value.html" class="btn btn-neutral" title="Averaged value"><span class="fa fa-arrow-circle-left"></span> Previous</a>
@@ -149,7 +178,7 @@
   <div role="contentinfo">
     <p>
         &copy; Copyright 2011-2014, Twitter Inc.
-      Last updated on Apr 28, 2014.
+      Last updated on Apr 30, 2014.
     </p>
   </div>
 

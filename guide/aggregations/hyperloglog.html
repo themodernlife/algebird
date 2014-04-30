@@ -30,8 +30,8 @@
   
     <link rel="top" title="Algebird Documentation" href="../index.html"/>
         <link rel="up" title="Aggregations" href="../aggregations.html"/>
-        <link rel="next" title="Top-K" href="top-k.html"/>
-        <link rel="prev" title="Count-min sketch" href="countmin-sketch.html"/> 
+        <link rel="next" title="Space-Saver" href="space-saver.html"/>
+        <link rel="prev" title="Decayed vector" href="decayed-vector.html"/> 
 
   
   <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
@@ -72,12 +72,12 @@
 <li class="toctree-l2"><a class="reference internal" href="approximate.html">Approximate</a></li>
 <li class="toctree-l2"><a class="reference internal" href="averaged-value.html">Averaged value</a></li>
 <li class="toctree-l2"><a class="reference internal" href="bloom-filter.html">Bloom filter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="countmin-sketch.html">Count-min sketch</a></li>
 <li class="toctree-l2"><a class="reference internal" href="decayed-value.html">Decayed value</a></li>
 <li class="toctree-l2"><a class="reference internal" href="decayed-vector.html">Decayed vector</a></li>
-<li class="toctree-l2"><a class="reference internal" href="countmin-sketch.html">Count-min sketch</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="">HyperLogLog</a></li>
-<li class="toctree-l2"><a class="reference internal" href="top-k.html">Top-K</a></li>
 <li class="toctree-l2"><a class="reference internal" href="space-saver.html">Space-Saver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="top-k.html">Top-K</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../summing.html">Miscellaneous summing utilities</a><ul>
@@ -86,9 +86,9 @@
 <li class="toctree-l2"><a class="reference internal" href="../summing.html#summingcache">SummingCache</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../summing.html#stateful-summing">Stateful summing</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../summing.html#sumall">SumAll</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../summing.html#bufferedsumall">BufferedSumAll</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../stateful-summing.html">Stateful summing</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../stateful-summing.html#sumall">SumAll</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../stateful-summing.html#bufferedsumall">BufferedSumAll</a></li>
 </ul>
 </li>
 </ul>
@@ -127,13 +127,12 @@
             
   <div class="section" id="hyperloglog">
 <span id="id1"></span><h1>HyperLogLog</h1>
-<p>The HyperLogLog is data structure capable of estimating the cardinality (number of dinstinct values) of a set.  It can
-do this in a very space efficient way.</p>
+<p>The HyperLogLog is data structure capable of estimating the cardinality (number of distinct values) of a list of elements.
+It can do this in a very space efficient way.</p>
 <p>You will need to interact with a few different objects</p>
 <ul class="simple">
 <li><tt class="docutils literal"><span class="pre">HyperLogLogMonoid</span></tt> - the monoid</li>
 <li><tt class="docutils literal"><span class="pre">HLL</span></tt> - the actual instances that wrap a given value</li>
-<li><tt class="docutils literal"><span class="pre">HyperLogLog</span></tt> - An object with utility methods... you probably shouldn't use it</li>
 </ul>
 <div class="section" id="creating-the-monoid">
 <h2>Creating the monoid</h2>
@@ -143,29 +142,134 @@ do this in a very space efficient way.</p>
 <span class="k">implicit</span> <span class="k">val</span> <span class="n">hllMonoid</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">HyperLogLogMonoid</span><span class="o">(</span><span class="mi">12</span><span class="o">)</span>
 </pre></div>
 </div>
-<p>The HyperLogLog monoid adds instances of <cite>HLL</cite>. <cite>HLL</cite> is basially a wrapper type
-that you can create using either the <cite>apply</cite> or <cite>create</cite> method on the monoid (<cite>create</cite>
-is just an alias for <cite>apply</cite>).</p>
+<p>The HyperLogLog monoid adds instances of <tt class="docutils literal"><span class="pre">HLL</span></tt>. <tt class="docutils literal"><span class="pre">HLL</span></tt> is basially a wrapper type
+that you can create using either the <tt class="docutils literal"><span class="pre">apply</span></tt> or <tt class="docutils literal"><span class="pre">create</span></tt> method on the monoid (<tt class="docutils literal"><span class="pre">create</span></tt>
+is just an alias for <tt class="docutils literal"><span class="pre">apply</span></tt>).  Let's say we want to count the distinct number of user IDs we've seen so far.
+We would use something like:</p>
 <div class="highlight-scala"><div class="highlight"><pre><span class="k">implicit</span> <span class="k">def</span> <span class="n">toBytes</span><span class="o">(</span><span class="n">s</span><span class="k">:</span> <span class="kt">String</span><span class="o">)</span> <span class="k">=</span> <span class="n">s</span><span class="o">.</span><span class="n">getBytes</span><span class="o">(</span><span class="s">&quot;utf-8&quot;</span><span class="o">)</span>
 
 <span class="k">implicit</span> <span class="k">val</span> <span class="n">hllMonoid</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">HyperLogLogMonoid</span><span class="o">(</span><span class="mi">12</span><span class="o">)</span>
+
 <span class="k">val</span> <span class="n">a</span> <span class="k">=</span> <span class="n">hllMonoid</span><span class="o">(</span><span class="s">&quot;hello world&quot;</span><span class="o">)</span>
 <span class="k">val</span> <span class="n">b</span> <span class="k">=</span> <span class="n">hllMonoid</span><span class="o">.</span><span class="n">create</span><span class="o">(</span><span class="s">&quot;hello world&quot;</span><span class="o">)</span>
 <span class="c1">//a == b</span>
 </pre></div>
 </div>
+<p>Note that in the above we take advantage of an implicit view from <tt class="docutils literal"><span class="pre">String</span></tt> to  <tt class="docutils literal"><span class="pre">Array[Byte]</span></tt> becuase <tt class="docutils literal"><span class="pre">HLL</span></tt> instances
+can only be created over <tt class="docutils literal"><span class="pre">Array[Byte]</span></tt>.</p>
 </div>
 <div class="section" id="estimating-cardinalities">
 <h2>Estimating cardinalities</h2>
-<p>Adding together HLL instances allows you to keep track of the number of distinct elements you've seen so far.</p>
+<p>Once we've added up a few <tt class="docutils literal"><span class="pre">HLL</span></tt> instances, we can get an estimate over the number of <em>distinct</em> elements we've seen
+so far.</p>
+<div class="highlight-scala"><div class="highlight"><pre><span class="k">import</span> <span class="nn">com.twitter.algebird._</span>
+<span class="k">import</span> <span class="nn">com.twitter.algebird.Operators._</span>
+
+<span class="k">implicit</span> <span class="k">def</span> <span class="n">toBytes</span><span class="o">(</span><span class="n">s</span><span class="k">:</span> <span class="kt">String</span><span class="o">)</span> <span class="k">=</span> <span class="n">s</span><span class="o">.</span><span class="n">getBytes</span><span class="o">(</span><span class="s">&quot;utf-8&quot;</span><span class="o">)</span>
+<span class="k">implicit</span> <span class="k">val</span> <span class="n">hllMonoid</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">HyperLogLogMonoid</span><span class="o">(</span><span class="mi">12</span><span class="o">)</span>
+
+<span class="k">val</span> <span class="n">sample</span> <span class="k">=</span> <span class="nc">List</span><span class="o">(</span><span class="s">&quot;user1&quot;</span><span class="o">,</span> <span class="s">&quot;user2&quot;</span><span class="o">,</span> <span class="s">&quot;user2&quot;</span><span class="o">,</span> <span class="s">&quot;user2&quot;</span><span class="o">,</span> <span class="s">&quot;user1&quot;</span><span class="o">,</span> <span class="s">&quot;user3&quot;</span><span class="o">)</span>
+<span class="k">val</span> <span class="n">finalHll</span> <span class="k">=</span> <span class="n">sample</span><span class="o">.</span><span class="n">map</span><span class="o">(</span><span class="n">hllMonoid</span><span class="o">(</span><span class="k">_</span><span class="o">)).</span><span class="n">monoidSum</span>
+<span class="k">val</span> <span class="n">size</span> <span class="k">=</span> <span class="n">finalHll</span><span class="o">.</span><span class="n">estimatedSize</span>
+<span class="c1">// 3</span>
+</pre></div>
 </div>
-<div class="section" id="additional-information">
-<h2>Additional information</h2>
+<p>If you're interested in additional details, such as error bounds, you can use</p>
+<div class="highlight-scala"><div class="highlight"><pre><span class="k">val</span> <span class="n">approx</span> <span class="k">=</span> <span class="n">finalHll</span><span class="o">.</span><span class="n">approximateSize</span>
+<span class="k">val</span> <span class="o">(</span><span class="n">min</span><span class="o">,</span> <span class="n">estimate</span><span class="o">,</span> <span class="n">max</span><span class="o">,</span> <span class="n">probWithinBounds</span><span class="o">)</span> <span class="k">=</span> <span class="o">(</span><span class="n">approx</span><span class="o">.</span><span class="n">min</span><span class="o">,</span> <span class="n">approx</span><span class="o">.</span><span class="n">estimate</span><span class="o">,</span> <span class="n">approx</span><span class="o">.</span><span class="n">max</span><span class="o">,</span> <span class="n">approx</span><span class="o">.</span><span class="n">probWithinBounds</span><span class="o">)</span>
+<span class="c1">// (2, 3, 4, 0.9972)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="miscellaneous-information">
+<h2>Miscellaneous information</h2>
 <div class="section" id="choosing-the-number-of-bits">
 <h3>Choosing the number of bits</h3>
+<p>HyperLogLog cardinality estimates are based on probability and include an error estimate.  You can tune the expected error
+by adjusting the number of bits used when hashing each element. More bits means larger object storage size.</p>
+<p>The below example demonstrates how different HyperLogLog configurations give different results depending on their
+configured error rate.</p>
+<div class="highlight-scala"><div class="highlight"><pre><span class="k">def</span> <span class="n">sumWithNBits</span><span class="o">(</span><span class="n">samples</span><span class="k">:</span> <span class="kt">Seq</span><span class="o">[</span><span class="kt">String</span><span class="o">],</span> <span class="n">nBits</span><span class="k">:</span> <span class="kt">Int</span><span class="o">)</span> <span class="k">=</span> <span class="o">{</span>
+  <span class="k">implicit</span> <span class="k">def</span> <span class="n">toBytes</span><span class="o">(</span><span class="n">s</span><span class="k">:</span> <span class="kt">String</span><span class="o">)</span> <span class="k">=</span> <span class="n">s</span><span class="o">.</span><span class="n">getBytes</span><span class="o">(</span><span class="s">&quot;utf-8&quot;</span><span class="o">)</span>
+  <span class="k">implicit</span> <span class="k">val</span> <span class="n">hllMonoid</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">HyperLogLogMonoid</span><span class="o">(</span><span class="n">nBits</span><span class="o">)</span>
+
+  <span class="n">samples</span><span class="o">.</span><span class="n">map</span><span class="o">(</span><span class="n">hllMonoid</span><span class="o">(</span><span class="k">_</span><span class="o">)).</span><span class="n">monoidSum</span><span class="o">.</span><span class="n">estimatedSize</span>
+<span class="o">}</span>
+
+<span class="k">val</span> <span class="n">samples</span> <span class="k">=</span> <span class="nc">List</span><span class="o">(</span>
+  <span class="s">&quot;TcqE&quot;</span><span class="o">,</span> <span class="s">&quot;ERGp&quot;</span><span class="o">,</span> <span class="s">&quot;zvPL&quot;</span><span class="o">,</span> <span class="s">&quot;oNRf&quot;</span><span class="o">,</span> <span class="s">&quot;UMdG&quot;</span><span class="o">,</span> <span class="s">&quot;nlvN&quot;</span><span class="o">,</span> <span class="s">&quot;cDun&quot;</span><span class="o">,</span> <span class="s">&quot;bxTD&quot;</span><span class="o">,</span> <span class="s">&quot;gHAy&quot;</span><span class="o">,</span> <span class="s">&quot;XLtM&quot;</span><span class="o">,</span>
+  <span class="s">&quot;OaHR&quot;</span><span class="o">,</span> <span class="s">&quot;vxCz&quot;</span><span class="o">,</span> <span class="s">&quot;olFU&quot;</span><span class="o">,</span> <span class="s">&quot;xObA&quot;</span><span class="o">,</span> <span class="s">&quot;AHyz&quot;</span><span class="o">,</span> <span class="s">&quot;ryUd&quot;</span><span class="o">,</span> <span class="s">&quot;CcBt&quot;</span><span class="o">,</span> <span class="s">&quot;vrpQ&quot;</span><span class="o">,</span> <span class="s">&quot;HsdJ&quot;</span><span class="o">,</span> <span class="s">&quot;qDCp&quot;</span><span class="o">,</span>
+  <span class="s">&quot;TcqE&quot;</span><span class="o">,</span> <span class="s">&quot;ERGp&quot;</span><span class="o">,</span> <span class="s">&quot;zvPL&quot;</span><span class="o">,</span> <span class="s">&quot;oNRf&quot;</span><span class="o">,</span> <span class="s">&quot;UMdG&quot;</span><span class="o">,</span> <span class="s">&quot;nlvN&quot;</span><span class="o">,</span> <span class="s">&quot;cDun&quot;</span><span class="o">,</span> <span class="s">&quot;bxTD&quot;</span><span class="o">,</span> <span class="s">&quot;gHAy&quot;</span><span class="o">,</span> <span class="s">&quot;XLtM&quot;</span><span class="o">,</span>
+  <span class="s">&quot;rjyW&quot;</span><span class="o">,</span> <span class="s">&quot;MTdy&quot;</span><span class="o">,</span> <span class="s">&quot;GnuV&quot;</span><span class="o">,</span> <span class="s">&quot;TSUi&quot;</span><span class="o">,</span> <span class="s">&quot;qCgX&quot;</span><span class="o">,</span> <span class="s">&quot;VsZo&quot;</span><span class="o">,</span> <span class="s">&quot;zHgs&quot;</span><span class="o">,</span> <span class="s">&quot;YpCW&quot;</span><span class="o">,</span> <span class="s">&quot;znBt&quot;</span><span class="o">,</span> <span class="s">&quot;TaKk&quot;</span><span class="o">,</span>
+  <span class="s">&quot;vUtJ&quot;</span><span class="o">,</span> <span class="s">&quot;TqEz&quot;</span><span class="o">,</span> <span class="s">&quot;HnVN&quot;</span><span class="o">,</span> <span class="s">&quot;VhTd&quot;</span><span class="o">,</span> <span class="s">&quot;nDSY&quot;</span><span class="o">,</span> <span class="s">&quot;UCWs&quot;</span><span class="o">,</span> <span class="s">&quot;bBzC&quot;</span><span class="o">,</span> <span class="s">&quot;AIgt&quot;</span><span class="o">,</span> <span class="s">&quot;KLQM&quot;</span><span class="o">,</span> <span class="s">&quot;MVSR&quot;</span>
+<span class="o">)</span>
+
+<span class="c1">// too costly for large data sets - use the HLL instead</span>
+<span class="k">val</span> <span class="n">trueUniques</span> <span class="k">=</span> <span class="n">samples</span><span class="o">.</span><span class="n">distinct</span><span class="o">.</span><span class="n">size</span>
+<span class="c1">// 40</span>
+
+<span class="k">val</span> <span class="n">estimate8</span> <span class="k">=</span> <span class="n">sumWithNBits</span><span class="o">(</span><span class="n">samples</span><span class="o">,</span> <span class="mi">8</span><span class="o">)</span>
+<span class="c1">// 38.0</span>
+
+<span class="k">val</span> <span class="n">estimate12</span> <span class="k">=</span> <span class="n">sumWithNBits</span><span class="o">(</span><span class="n">samples</span><span class="o">,</span> <span class="mi">12</span><span class="o">)</span>
+<span class="c1">// 40.0</span>
+</pre></div>
+</div>
+<p>The error is <span class="math">\(\frac{1.04}{\sqrt{2^{bits}}}\)</span>, so you want something like 12 bits for a 1% error.  See the table below
+for information on trade-off between error and object size.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="10%" />
+<col width="31%" />
+<col width="60%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Bits</th>
+<th class="head">Error percent</th>
+<th class="head">Object size</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>8</td>
+<td>6.5%</td>
+<td><span class="math">\(2^{8}\)</span> = 256 bytes</td>
+</tr>
+<tr class="row-odd"><td>9</td>
+<td>5.0%</td>
+<td><span class="math">\(2^{9}\)</span> = 512 bytes</td>
+</tr>
+<tr class="row-even"><td>10</td>
+<td>3.3%</td>
+<td><span class="math">\(2^{10}\)</span> = 1 kb</td>
+</tr>
+<tr class="row-odd"><td>11</td>
+<td>2.3%</td>
+<td><span class="math">\(2^{11}\)</span> = 2 kb</td>
+</tr>
+<tr class="row-even"><td>12</td>
+<td>1.6%</td>
+<td><span class="math">\(2^{12}\)</span> = 4 kb</td>
+</tr>
+<tr class="row-odd"><td>13</td>
+<td>1.1%</td>
+<td><span class="math">\(2^{13}\)</span> = 8 kb</td>
+</tr>
+<tr class="row-even"><td>14</td>
+<td>0.8%</td>
+<td><span class="math">\(2^{14}\)</span> = 16 kb</td>
+</tr>
+</tbody>
+</table>
 </div>
 <div class="section" id="serializing-to-from-array-bytes">
 <h3>Serializing to/from Array[Bytes]</h3>
+<p>You can serialize HyperLogLog instances to and from <tt class="docutils literal"><span class="pre">Array[Byte</span></tt>.  This can be useful for e.g. storing objects in an
+online database to keep track of the number of distinct values seen over a given time window.</p>
+<div class="highlight-scala"><div class="highlight"><pre><span class="k">val</span> <span class="n">bytes</span> <span class="k">=</span> <span class="nc">HyperLogLog</span><span class="o">.</span><span class="n">toBytes</span><span class="o">(</span><span class="n">finalHll</span><span class="o">)</span>
+<span class="k">val</span> <span class="n">newHll</span> <span class="k">=</span> <span class="nc">HyperLogLog</span><span class="o">.</span><span class="n">fromBytes</span><span class="o">(</span><span class="n">bytes</span><span class="o">)</span>
+<span class="c1">// newHll == finalHll</span>
+</pre></div>
+</div>
 </div>
 </div>
 </div>
@@ -176,10 +280,10 @@ is just an alias for <cite>apply</cite>).</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="top-k.html" class="btn btn-neutral float-right" title="Top-K">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="space-saver.html" class="btn btn-neutral float-right" title="Space-Saver">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="countmin-sketch.html" class="btn btn-neutral" title="Count-min sketch"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="decayed-vector.html" class="btn btn-neutral" title="Decayed vector"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -189,7 +293,7 @@ is just an alias for <cite>apply</cite>).</p>
   <div role="contentinfo">
     <p>
         &copy; Copyright 2011-2014, Twitter Inc.
-      Last updated on Apr 28, 2014.
+      Last updated on Apr 30, 2014.
     </p>
   </div>
 

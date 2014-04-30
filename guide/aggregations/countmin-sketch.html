@@ -30,8 +30,8 @@
   
     <link rel="top" title="Algebird Documentation" href="../index.html"/>
         <link rel="up" title="Aggregations" href="../aggregations.html"/>
-        <link rel="next" title="HyperLogLog" href="hyperloglog.html"/>
-        <link rel="prev" title="Decayed vector" href="decayed-vector.html"/> 
+        <link rel="next" title="Decayed value" href="decayed-value.html"/>
+        <link rel="prev" title="Bloom filter" href="bloom-filter.html"/> 
 
   
   <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
@@ -72,12 +72,12 @@
 <li class="toctree-l2"><a class="reference internal" href="approximate.html">Approximate</a></li>
 <li class="toctree-l2"><a class="reference internal" href="averaged-value.html">Averaged value</a></li>
 <li class="toctree-l2"><a class="reference internal" href="bloom-filter.html">Bloom filter</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="">Count-min sketch</a></li>
 <li class="toctree-l2"><a class="reference internal" href="decayed-value.html">Decayed value</a></li>
 <li class="toctree-l2"><a class="reference internal" href="decayed-vector.html">Decayed vector</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="">Count-min sketch</a></li>
 <li class="toctree-l2"><a class="reference internal" href="hyperloglog.html">HyperLogLog</a></li>
-<li class="toctree-l2"><a class="reference internal" href="top-k.html">Top-K</a></li>
 <li class="toctree-l2"><a class="reference internal" href="space-saver.html">Space-Saver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="top-k.html">Top-K</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../summing.html">Miscellaneous summing utilities</a><ul>
@@ -86,9 +86,9 @@
 <li class="toctree-l2"><a class="reference internal" href="../summing.html#summingcache">SummingCache</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../summing.html#stateful-summing">Stateful summing</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../summing.html#sumall">SumAll</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../summing.html#bufferedsumall">BufferedSumAll</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../stateful-summing.html">Stateful summing</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../stateful-summing.html#sumall">SumAll</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../stateful-summing.html#bufferedsumall">BufferedSumAll</a></li>
 </ul>
 </li>
 </ul>
@@ -127,14 +127,62 @@
             
   <div class="section" id="count-min-sketch">
 <span id="countmin-sketch"></span><h1>Count-min sketch</h1>
-<p>From wikipedia</p>
-<blockquote>
-<div><p>The Count–min sketch (or CM sketch) is a probabilistic sub-linear space streaming algorithm
-which can be used to summarize a data stream in many different ways.
-The algorithm was invented in 2003 by Graham Cormode and S. Muthu Muthukrishnan.</p>
-<p>Count–min sketches are somewhat similar to Bloom filters; the main distinction is that Bloom filters represent sets, while CM sketches represent multisets and frequency tables.</p>
-</div></blockquote>
-<p>That's great.</p>
+<p>A Count-min sketch is a probabilistic data structure used for summarizing
+streams of data in sub-linear space.</p>
+<p>It works as follows: let (eps, delta) be two parameters that describe the
+confidence in our error estimates, and let d = ceil(ln 1/delta)
+and w = ceil(e / eps). Then:</p>
+<ul class="simple">
+<li>Take d pairwise independent hash functions h_i, each of which maps
+onto the domain [0, w - 1].</li>
+<li>Create a 2-dimensional table of counts, with d rows and w columns,
+initialized with all zeroes.</li>
+<li>When a new element x arrives in the stream, update the table of counts
+by setting counts[i, h_i[x]] += 1, for each 1 &lt;= i &lt;= d.</li>
+<li>(Note the rough similarity to a Bloom filter.)</li>
+</ul>
+<p>As an example application, suppose you want to estimate the number of
+times an element x has appeared in a data stream so far.
+The Count-Min sketch estimate of this frequency is</p>
+<div class="math">
+\[min_i { counts[i, h_i[x]] }\]</div>
+<p>With probability at least 1 - delta, this estimate is within eps * N
+of the true frequency (i.e., true frequency &lt;= estimate &lt;= true frequency + eps * N),
+where N is the total size of the stream so far.</p>
+<p>See <a class="reference external" href="http://www.eecs.harvard.edu/~michaelm/CS222/countmin.pdf">http://www.eecs.harvard.edu/~michaelm/CS222/countmin.pdf</a> for technical details,
+including proofs of the estimates and error bounds used in this implementation.</p>
+<div class="section" id="using-count-min-sketch">
+<h2>Using Count-min sketch</h2>
+<p>Usage of the CMS is similar to using the HyperLogLog or BloomFilter.  Basically you need to create an implicit monoid,
+wrap your values in a <tt class="docutils literal"><span class="pre">CMS</span></tt> object and then add the <tt class="docutils literal"><span class="pre">CMS</span></tt> instances together.  You can query the final <tt class="docutils literal"><span class="pre">CMS</span></tt>
+for things like the set of &quot;heavy-hitters&quot; (most frequently occurring items).</p>
+<div class="highlight-scala"><div class="highlight"><pre><span class="k">import</span> <span class="nn">com.twitter.algebird._</span>
+<span class="k">import</span> <span class="nn">com.twitter.algebird.Operators._</span>
+
+<span class="k">implicit</span> <span class="k">val</span> <span class="n">cms</span> <span class="k">=</span> <span class="nc">CMS</span><span class="o">.</span><span class="n">monoid</span><span class="o">(</span><span class="mf">0.01</span><span class="o">,</span> <span class="mf">0.01</span><span class="o">,</span> <span class="mi">12345</span><span class="o">)</span>
+
+<span class="k">val</span> <span class="n">samples</span> <span class="k">=</span> <span class="nc">Seq</span><span class="o">.</span><span class="n">fill</span><span class="o">(</span><span class="mi">100</span><span class="o">)(</span><span class="mi">12345L</span><span class="o">)</span> <span class="o">++</span> <span class="nc">Seq</span><span class="o">.</span><span class="n">fill</span><span class="o">(</span><span class="mi">100</span><span class="o">)(</span><span class="mi">54321L</span><span class="o">)</span> <span class="o">++</span> <span class="nc">Seq</span><span class="o">.</span><span class="n">fill</span><span class="o">(</span><span class="mi">1000</span><span class="o">)(</span><span class="n">scala</span><span class="o">.</span><span class="n">math</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">toLong</span><span class="o">)</span>
+<span class="k">val</span> <span class="n">soFar</span> <span class="k">=</span> <span class="n">samples</span><span class="o">.</span><span class="n">map</span><span class="o">(</span><span class="n">cms</span><span class="o">.</span><span class="n">create</span><span class="o">(</span><span class="k">_</span><span class="o">)).</span><span class="n">monoidSum</span>
+
+<span class="n">soFar</span><span class="o">.</span><span class="n">heavyHitters</span>
+<span class="c1">// Set(12345L, 54321L, ...)</span>
+
+<span class="n">soFar</span><span class="o">.</span><span class="n">frequency</span><span class="o">(</span><span class="mi">12345L</span><span class="o">).</span><span class="n">estimate</span>
+<span class="c1">// 100</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="choosing-eps-and-delta">
+<h2>Choosing eps and delta</h2>
+<p>The CMS monoid takes 2 parameters, <tt class="docutils literal"><span class="pre">eps</span></tt> and <tt class="docutils literal"><span class="pre">delta</span></tt>, which bound the error of each query estimate:</p>
+<ul class="simple">
+<li><strong>eps</strong> bound on the query error</li>
+<li><strong>delta</strong> bound on the probability that a query estimate does not lie within some small interval (an interval that
+depends on <em>eps</em>) around the truth</li>
+</ul>
+<p>Errors in answering queries (e.g., how often has element x appeared in the stream described by the sketch?)
+are often of the form <strong>with probability p &gt;= 1 - delta, the estimate is close to the truth by some factor depending on eps</strong>.</p>
+</div>
 </div>
 
 
@@ -143,10 +191,10 @@ The algorithm was invented in 2003 by Graham Cormode and S. Muthu Muthukrishnan.
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="hyperloglog.html" class="btn btn-neutral float-right" title="HyperLogLog">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="decayed-value.html" class="btn btn-neutral float-right" title="Decayed value">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="decayed-vector.html" class="btn btn-neutral" title="Decayed vector"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="bloom-filter.html" class="btn btn-neutral" title="Bloom filter"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -156,7 +204,7 @@ The algorithm was invented in 2003 by Graham Cormode and S. Muthu Muthukrishnan.
   <div role="contentinfo">
     <p>
         &copy; Copyright 2011-2014, Twitter Inc.
-      Last updated on Apr 28, 2014.
+      Last updated on Apr 30, 2014.
     </p>
   </div>
 

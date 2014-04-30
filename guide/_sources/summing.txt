@@ -17,13 +17,3 @@ SummingCache
 
 
 
-Stateful summing
-================
-
-What is it?
-
-SumAll
-------
-
-BufferedSumAll
---------------
