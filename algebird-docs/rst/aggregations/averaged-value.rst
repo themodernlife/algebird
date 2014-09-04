@@ -14,6 +14,9 @@ the companion object of ``AveragedValue`` and your instances will combine using 
 Considerations for large data sets
 ----------------------------------
 
+.. warning::
+    The below is trying to explain what STABILITY_CONSTANT in AverageValue.scala is for, but I really have no idea.
+
 We all learned in school that the mean or average is equal to the sum of the values divided by the count of values.
 Unfortunatly this approach can lead to accumulated rounding errors when computing averages in parallel across a cluster
 as is often the case when using Algebird on Hadoop.
